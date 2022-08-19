@@ -1,30 +1,30 @@
 # Certbot with CloudFlare DNS
 
-In this small sub-guide, we will get a certificate from [Let's Encrypt](https://letsencrypt.org/), and we will use CloudFlare's API to add/remove DNS records to validate our ownership of the domain.
+En esta pequeña subguía, obtendremos un certificado de [Let's Encrypt](https://letsencrypt.org/), y utilizaremos la API de CloudFlare para añadir/eliminar registros DNS para validar nuestra propiedad del dominio.
 
 ## Generate an API token for CloudFlare
 
-- Navigate to https://dash.cloudflare.com/profile/api-tokens
-- Under "API Tokens", click "Create Token"
-- Enter a descriptive token name, e.g. "Certbot on my-server-name"
-- In the "Permissions" row, select "Zone", "DNS", "Edit"
-- In the "Zone Resources" row, select "Include", "Specific Zone", and select the domain you want to get the certificate for
-- If you want your server to get access to more than one domain only, click "Add More" under "Zone Resources" and repeat for other zones.
-- Click "Continue to Summary" when you're done, and verify what it shows is what you want
-- Click "Create Token" to finally get your token!
-- On the final page, copy the token and temporarily store it somewhere safe, or keep the page open. We will need this token in the next step.
+- Vaya a https://dash.cloudflare.com/profile/api-tokens
+- En "API Tokens", haga clic en "Crear Token".
+- Introduzca un nombre de token descriptivo, por ejemplo "Certbot en mi-nombre-de-servidor".
+- En la fila "Permisos", seleccione "Zona", "DNS", "Editar".
+- En la fila "Recursos de zona", seleccione "Incluir", "Zona específica" y seleccione el dominio para el que desea obtener el certificado.
+- Si desea que su servidor obtenga acceso a más de un dominio, haga clic en "Añadir más" en "Recursos de zona" y repita la operación para otras zonas.
+- Haz clic en "Continuar con el resumen" cuando hayas terminado y comprueba que lo que se muestra es lo que deseas.
+- Haz clic en "Crear token" para obtener finalmente tu token.
+- En la última página, copie el código y guárdelo temporalmente en un lugar seguro, o mantenga la página abierta. Necesitaremos este token en el siguiente paso.
 
-## Install Certbot
+## Instalar Certbot
 
-Certbot is a service that runs on your server that automatically takes care of requesting certificates (and keeping them refreshed) for your domains.
+Certbot es un servicio que se ejecuta en tu servidor y que se encarga automáticamente de solicitar certificados (y mantenerlos actualizados) para tus dominios.
 
 ```bash
 sudo apt install certbot python3-certbot-dns-cloudflare
 ```
 
-## Store CloudFlare API token on the server
+## Almacenar el token de la API de CloudFlare en el servidor
 
-Create a file to hold your secret API key like this:
+Crea un archivo para guardar tu clave secreta de la API de la siguiente manera:
 
 ```bash
 sudo mkdir -p /etc/letsencrypt/secrets
@@ -33,23 +33,23 @@ sudo chown root:root /etc/letsencrypt/secrets/cloudflare.ini
 sudo chmod 600 /etc/letsencrypt/secrets/cloudflare.ini
 ```
 
-Then insert your API details:
+A continuación, introduzca los datos de su API:
 
 ```bash
 sudo nano /etc/letsencrypt/secrets/cloudflare.ini
 ```
 
-Put the API key from the previous step next to `dns_cloudflare_api_token`.
+Ponga la clave API del paso anterior junto a `dns_cloudflare_api_token`.
 
-## Request certificate with certbot
+## Solicitar certificado con certbot
 
-Repeat `-d "domain-name.com"` as many times as needed to add domain names and wildcards to your certificate.
+Repita `-d "nombre-del-dominio.com"` tantas veces como sea necesario para añadir nombres de dominio y comodines a su certificado.
 
 ```bash
 sudo certbot certonly --dns-cloudflare --dns-cloudflare-credentials /etc/letsencrypt/secrets/cloudflare.ini -d "your-domain.com" -d "*.your-domain.com" --post-hook "systemctl reload nginx"
 ```
 
-You should see output similar to this:
+Debería ver un resultado similar a este:
 
 <pre><code>Saving debug log to /var/log/letsencrypt/letsencrypt.log
 Plugins selected: Authenticator dns-cloudflare, Installer None
@@ -74,9 +74,9 @@ IMPORTANT NOTES:
    Donating to ISRG / Let's Encrypt:   https://letsencrypt.org/donate
    Donating to EFF:                    https://eff.org/donate-le</code></pre>
 
-Notice the highlighted part: This is important for setting up your nginx configuration: The first path is what goes with `ssl_certificate`, the second path goes with `ssl_certificate_key`.
+Fíjate en la parte resaltada: Esto es importante para establecer la configuración de nginx: La primera ruta es la que va con `ssl_certificate`, la segunda ruta va con `ssl_certificate_key`.
 
-You can now edit the nginx configuration file and point it to the correct certificate path:
+Ahora puedes editar el archivo de configuración de nginx y apuntarlo a la ruta correcta del certificado:
 
 ```bash
 sudo nano /etc/nginx/sites-available/streamer_name.your-domain.com.conf
@@ -87,4 +87,4 @@ ssl_certificate /etc/letsencrypt/live/your-domain.com/fullchain.pem;
 ssl_certificate_key /etc/letsencrypt/live/your-domain.com/privkey.pem;
 ```
 
-> Note! If you have requested a wildcard certificate (as we have done here in the example), you can re-use the same certificate for multiple bots. E.g. if you have bots running under the two subdomains `streamer_a.your-domain.com` and `streamer_b.your-domain.com`, and you have a wildcard certificate for `*.your-domain.com`, then both these site configurations can share the same certificate (`/etc/letsencrypt/live/your-domain.com/fullchain.pem` for example).
+> ¡Nota! Si has solicitado un certificado comodín (como hemos hecho aquí en el ejemplo), puedes reutilizar el mismo certificado para varios bots. Por ejemplo, si tienes bots que se ejecutan bajo los dos subdominios `streamer_a.tu-dominio.com` y `streamer_b.tu-dominio.com`, y tienes un certificado comodín para `*.tu-dominio.com`, entonces ambas configuraciones del sitio pueden compartir el mismo certificado (`/etc/letsencrypt/live/tu-dominio.com/fullchain.pem` por ejemplo).

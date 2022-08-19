@@ -1,16 +1,16 @@
-# Basic nginx configuration
+# Configuración básica de nginx
 
-When you install nginx from the debian repositories, it comes with a basic configuration to show that nginx is working. However, the out-of-the-box configuration does not set you up very well for a secure server that uses HTTPS only.
+Cuando instalas nginx desde los repositorios debian, viene con una configuración básica para mostrar que nginx está funcionando. Sin embargo, la configuración no es recomendada establecerse para un servidor seguro que utiliza HTTPS solamente.
 
-You can use this basic configuration as a template for your own setup. It contains a slightly altered `nginx.conf` that sets some security-relevant headers, configures secure defaults for HTTPS connections and also redirects users if they try to access your websites using HTTP.
+Puedes usar esta configuración básica como una plantilla para tu propia configuración. Contiene un `nginx.conf` ligeramente alterado que establece algunas cabeceras relevantes para la seguridad, configura valores predeterminados seguros para las conexiones HTTPS y también redirige a los usuarios si intentan acceder a sus sitios web utilizando HTTP.
 
-First thing we need to do: We are going to need a version of nginx with a few extra features:
+Lo primero que tenemos que hacer: Vamos a necesitar una versión de nginx con algunas características extra:
 
 ```bash
 sudo apt install nginx-extras
 ```
 
-Then merge our configuration into your nginx configuration directory and remove the pre-installed default site config:
+A continuación, fusiona nuestra configuración en tu directorio de configuración de nginx y elimina la configuración del sitio por defecto preinstalada:
 
 ```bash
 sudo cp -RT /opt/pajbot/install-docs/full-nginx-setup/basic-config/ /etc/nginx/
@@ -18,17 +18,17 @@ sudo ln -s /etc/nginx/sites-available/https-redirect.conf /etc/nginx/sites-enabl
 sudo rm /etc/nginx/sites-{available,enabled}/default
 ```
 
-We also need to generate a cryptographic file called the "Diffie-Hellman parameters":
+También necesitamos generar un archivo criptográfico llamado "parámetros Diffie-Hellman":
 
 ```bash
 sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 4096
 ```
 
-This command can potentially take quite long (on the order of 1-2 hours if your CPU is not very recent).
+Este comando puede tardar bastante (del orden de 1-2 horas si su CPU no es muy reciente).
 
-> Note: Diffie-Hellman parameters are not secret in any sense (Your server even sends these parameters to connecting clients), so you don't need to keep the generated file secret, or worry about leaking it.
+> Nota: Los parámetros Diffie-Hellman no son secretos en ningún sentido (Su servidor incluso envía estos parámetros a los clientes que se conectan), por lo que no necesita mantener el archivo generado en secreto, ni preocuparse de que se filtre.
 
-Once that's done, restart nginx like this:
+Una vez hecho esto, reinicia nginx de la siguiente manera:
 
 ```bash
 sudo systemctl reload nginx

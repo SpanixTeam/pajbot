@@ -1,65 +1,65 @@
-# Installation instructions
+# Instrucciones de instalación
 
-Welcome to the installation instructions for pajbot!
+¡Bienvenido a las instrucciones de instalación de pajbot!
 
-Below is the index for a full list of installation instructions for pajbot.
+Abajo encuentras el índice para una lista completa de instrucciones de instalación para pajbot.
 
-These installation instructions will install pajbot in a way that allows you to run pajbot for multiple streamers at once without too much duplication. For this reason, these installation instructions are split into two big parts: Installation of pajbot, and creating a pajbot instance for a single channel (which you can repeat as needed, should you want to run pajbot in multiple channels, for different streamers for example).
+Estas instrucciones instalarán pajbot de forma que te permita ejecutarlo para varios streamers a la vez sin necesidad de un duplicado. Por esta razón, estas instrucciones de instalación están divididas en dos grandes partes: La instalación de pajbot, y la creación de una instancia de pajbot para un solo canal (que puedes repetir según sea necesario, si quieres ejecutar pajbot en múltiples canales, para diferentes streamers por ejemplo).
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
+**Tabla de Contenido** _generada con [DocToc](https://github.com/thlorenz/doctoc)_
 
-- [Service installation](#service-installation)
-  - [Install system dependencies](#install-system-dependencies)
-  - [Set up a system user](#set-up-a-system-user)
-  - [Install pajbot](#install-pajbot)
-  - [Install and set up the database server](#install-and-set-up-the-database-server)
-  - [Install Redis](#install-redis)
-  - [Install nginx](#install-nginx)
-  - [Install system services](#install-system-services)
-- [Single bot setup](#single-bot-setup)
-  - [Create an application with Twitch](#create-an-application-with-twitch)
-  - [Create a database schema](#create-a-database-schema)
-  - [Create a configuration file](#create-a-configuration-file)
-  - [Set up the website with nginx](#set-up-the-website-with-nginx)
-  - [Enable and start the service](#enable-and-start-the-service)
-  - [Authenticate the bot](#authenticate-the-bot)
-  - [Further steps](#further-steps)
+- [Instalación de servicios](#instalación-de-servicios)
+  - [Instalar dependencias del sistema](#instalar-dependencias-del-sistema)
+  - [Configurar un usuario del sistema](#configurar-un-usuario-del-sistema)
+  - [Instalar pajbot](#instalar-pajbot)
+  - [Instalar y configurar base de datos](#instalar-y-configurar-base-de-datos)
+  - [Instalar Redis](#instalar-redis)
+  - [Instalar nginx](#instalar-nginx)
+  - [Instalar servicios del sistema](#instalar-servicios-del-sistema)
+- [Configuración de un bot](#configuración-de-un-bot)
+  - [Crear una aplicación con Twitch](#crear-una-aplicación-con-twitch)
+  - [Crear un esquema de base de datos](#crear-un-esquema-de-base-de-datos)
+  - [Crear un archivo de configuración](#crear-un-archivo-de-configuración)
+  - [Configurar el sitio web con nginx](#configurar-el-sitio-web-con-nginx)
+  - [Habilitar e iniciar el servicio](#habilitar-e-iniciar-el-servicio)
+  - [Autenticar el bot](#autenticar-el-bot)
+  - [Otros pasos](#otros-pasos)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-# Service installation
+# Instalación de servicios
 
-Please note we currently only document how to run pajbot on GNU/Linux systems. The following instructions should work without any changes on Debian and Ubuntu. If you are running another distribution of GNU/Linux, you might have to make some changes to the commands, file locations, etc. below.
+Por favor, tenga en cuenta que actualmente sólo documentamos cómo ejecutar pajbot en sistemas GNU/Linux. Las siguientes instrucciones deberían funcionar sin ningún problema en Debian y Ubuntu. Si está ejecutando otra distribución de GNU/Linux, es posible que tenga que hacer algunos cambios en los comandos, ubicaciones de archivos, etc. a continuación.
 
-## Install system dependencies
+## Instalar dependencias del sistema
 
-Pajbot is written in python, so we need to install some basic python packages:
+Pajbot está escrito en python, así que necesitamos instalar algunos paquetes básicos de python:
 
 ```bash
 sudo apt update
 sudo apt install python3 python3-dev python3-pip python3-venv
 ```
 
-We also need the following libraries and build tools:
+También necesitamos las siguientes bibliotecas y herramientas de compilación:
 
 ```bash
 sudo apt install libssl-dev libpq-dev build-essential git
 ```
 
-Now, double-check that you have Python 3.9 or newer installed:
+Ahora, comprueba que tienes Python 3.9 o más reciente instalado:
 
 ```bash
 python3 --version
 ```
 
-If your system Python version is not 3.9 or above, you must install [pyenv](https://github.com/pyenv/pyenv) following the instructions below.
+Si la versión de Python de su sistema no es 3.9 o superior, debe instalar [pyenv](https://github.com/pyenv/pyenv) siguiendo las instrucciones que se indican a continuación.
 
-### Installing pyenv
+### Instalación de pyenv
 
-Install the required dependencies to build Python (instructions from [here](https://github.com/pyenv/pyenv/wiki#suggested-build-environment))
+Instale las dependencias necesarias para compilar Python (instrucciones de [aquí](https://github.com/pyenv/pyenv/wiki#suggested-build-environment))
 
 ```bash
 sudo apt update
@@ -68,13 +68,13 @@ libbz2-dev libreadline-dev libsqlite3-dev curl \
 libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
 ```
 
-Install pyenv on your system (instructions from [here](https://github.com/pyenv/pyenv#automatic-installer), there are other alternative methods of installations avilable if you want)
+Instala pyenv en tu sistema (instrucciones desde [aquí](https://github.com/pyenv/pyenv#automatic-installer), hay otros métodos alternativos de instalación disponibles si lo deseas)
 
 ```bash
 curl https://pyenv.run | bash
 ```
 
-Set up your bash shell environment for Pyenv (instructions from [here](https://github.com/pyenv/pyenv#set-up-your-shell-environment-for-pyenv))
+Configure su entorno de shell bash para Pyenv (instrucciones de [aquí](https://github.com/pyenv/pyenv#set-up-your-shell-environment-for-pyenv))
 
 ```bash
 echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bashrc
@@ -82,220 +82,223 @@ echo 'command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.
 echo 'eval "$(pyenv init -)"' >> ~/.bashrc
 ```
 
-Then restart your shell.
+A continuación, reinicie su shell.
 
-## Set up a system user
+## Configurar un usuario del sistema
 
-For security reasons, you shouldn't run pajbot as the `root` user on your server. You can create a low-privilege "system" user for pajbot like this:
+Por razones de seguridad, no deberías ejecutar pajbot como usuario `root` en tu servidor. Puedes crear un usuario de "sistema" con pocos privilegios para pajbot de la siguiente manera:
 
 ```bash
 sudo adduser --system --group pajbot --home /opt/pajbot
 ```
 
-## Install pajbot
+## Instalar pajbot
 
-Download the latest stable version of pajbot:
+Descarga la última versión de pajbot mediante una branch dependiendo de tus necesidades:
+<p align="center">
+<kbd>master</kbd>: Rama base | <kbd>dark-mode</kbd>: Modo oscuro
+</p>
 
 ```bash
-sudo -u pajbot git clone https://github.com/pajbot/pajbot.git /opt/pajbot --branch stable
+sudo -u pajbot git clone https://github.com/SpanixTeam/pajbot.git /opt/pajbot --branch dark-mode
 ```
 
-Install pajbot's dependencies like this:
+Instala las dependencias de pajbot así:
 
 ```bash
 cd /opt/pajbot
 sudo -H -u pajbot ./scripts/venvinstall.sh
 ```
 
-If you wanted to use your system version of Python, run the command like this instead:
+Si desea utilizar la versión de Python de su sistema, ejecute el comando de la siguiente manera:
 
 ```bash
 cd /opt/pajbot
 sudo -H -u pajbot SKIP_PYENV=1 ./scripts/venvinstall.sh
 ```
 
-## Install and set up the database server
+## Instalar y configurar base de datos
 
-pajbot uses PostgreSQL as its database server. If you don't already have PostgreSQL running on your server, you can install it with:
+pajbot utiliza PostgreSQL como servidor de bases de datos. Si aún no tienes PostgreSQL corriendo en tu servidor, puedes instalarlo con:
 
 ```bash
 sudo apt install postgresql
 ```
 
-Now that you have PostgreSQL installed, we will create a user to allow pajbot to use the PostgreSQL database server:
+Ahora que tienes PostgreSQL instalado, crearemos un usuario para que pajbot pueda utilizar la bases de datos PostgreSQL:
 
 ```bash
 sudo -u postgres createuser pajbot
 ```
 
-> Note: We have not set a password for pajbot, and this is intentional. Because we created a system user with the name `pajbot` earlier, applications running under the `pajbot` system user will be able to log into the database server as the `pajbot` database user automatically, without having to enter a password.
+> Nota: No hemos establecido una contraseña para pajbot, y esto es intencional. Debido a que hemos creado un usuario del sistema con el nombre `pajbot` antes, las aplicaciones que se ejecutan bajo el usuario del sistema `pajbot` serán capaces de iniciar sesión en el servidor de base de datos como el usuario de base de datos `pajbot` automáticamente, sin tener que introducir una contraseña.
 >
-> We have run `createuser` as `postgres` for the same reason: `postgres` is a pre-defined PostgreSQL database superuser, and by using `sudo`, we are executing `createuser pajbot` as the `postgres` system (and database) user.
+> Hemos ejecutado `createuser` como `postgres` por la misma razón: `postgres` es un superusuario predefinido de la base de datos PostgreSQL, y al usar `sudo`, estamos ejecutando `createuser pajbot` como el usuario del sistema (y de la base de datos) `postgres`.
 >
-> This is a default setting present on Debian-like systems, and is defined via the configuration file [`pg_hba.conf`](https://www.postgresql.org/docs/current/auth-pg-hba-conf.html).
+> Esta es una configuración por defecto presente en los sistemas tipo Debian, y se define a través del fichero de configuración [`pg_hba.conf`](https://www.postgresql.org/docs/current/auth-pg-hba-conf.html).
 
-We will now create a database named `pajbot`, owned by the `pajbot` database user:
+Ahora crearemos una base de datos llamada `pajbot`, propiedad del usuario de base de datos `pajbot`:
 
 ```bash
 sudo -u postgres createdb --owner=pajbot pajbot
 ```
 
-## Install Redis
+## Instalar Redis
 
-Pajbot also needs an instance of [Redis](https://redis.io/) to run. The redis database server does not need any manual setup - all you have to do is install redis:
+Pajbot también necesita una instancia de [Redis](https://redis.io/) para funcionar. El servidor de base de datos redis no necesita ninguna configuración manual - todo lo que tienes que hacer es instalar redis:
 
 ```bash
 sudo apt install redis-server
 ```
 
-The redis server is automatically started after installation. You can verify your installation works like this:
+El servidor de redis se inicia automáticamente después de la instalación. Puedes comprobar que la instalación funciona así:
 
 ```bash
 redis-cli PING
 ```
 
-You should get `PONG` as the response output. That means your redis server is working fine.
+Deberías obtener `PONG` como respuesta. Eso significa que tu servidor de redis está funcionando bien.
 
-## Install nginx
+## Instalar nginx
 
-Nginx is a reverse proxy - it accepts all incoming HTTP requests to your server, and forwards the request to the correct backend service. It also applies encryption for HTTPS, can set headers, rewrite URLs, and so on.
+Nginx es un proxy inverso - acepta todas las peticiones HTTP entrantes a su servidor, y reenvía la petición al servicio backend correcto. También aplica encriptación para HTTPS, puede establecer cabeceras, reescribir URLs, etc.
 
-All you need to do for this step is to install nginx:
+Todo lo que necesitas hacer para este paso es instalar nginx:
 
 ```bash
 sudo apt install nginx
 ```
 
-We will configure nginx later.
+Configuraremos nginx más tarde.
 
-> Note: You can find a basic nginx configuration setup including HTTP -> HTTPS redirect, recommended SSL configuration parameters, etc. [over here](./full-nginx-setup/README.md). If you don't already have a basic nginx setup, we strongly recommend you follow the linked guideline now.
+> Nota: Puedes encontrar una configuración básica de nginx que incluye la redirección HTTP -> HTTPS, los parámetros de configuración SSL recomendados, etc. [aquí](./full-nginx-setup/README.md). Si aún no tienes una configuración básica de nginx, te recomendamos encarecidamente que sigas la directriz enlazada ahora.
 
-## Install system services
+## Instalar servicios del sistema
 
-We recommend you run pajbot with the help of systemd. Systemd will take care of:
+Te recomendamos que ejecutes pajbot con la ayuda de systemd. Systemd se encargará de:
 
-- starting and stopping pajbot,
-- capturing and storing the output of the service as logs,
-- starting pajbot automatically on system startup (and starting it in the correct order, after other services it needs),
-- restarting pajbot on failure,
-- and running multiple instances if you run pajbot for multiple streamers
+- iniciar y detener pajbot,
+- capturar y almacenar la salida del servicio como registros,
+- iniciar pajbot automáticamente al arrancar el sistema (y arrancarlo en el orden correcto, después de otros servicios que necesita),
+- reiniciar pajbot en caso de fallo,
+- y ejecutar múltiples instancias si ejecutas pajbot para varios streamers
 
-To start using systemd for pajbot, install the pre-packaged unit files like this:
+Para empezar a usar systemd para pajbot, instala los archivos de unidad preempaquetados así:
 
 ```bash
 sudo cp /opt/pajbot/install-docs/*.service /etc/systemd/system/
 ```
 
-Then tell systemd to reload changes:
+A continuación, dile a systemd que recargue los cambios:
 
 ```bash
 sudo systemctl daemon-reload
 ```
 
-# Single bot setup
+# Configuración de un bot
 
-Now that you have the basics installed, we need to tell pajbot to (and how to) run in a certain channel. Pajbot running in a single channel, and with its website for that channel, is called an **instance** of pajbot from now on.
+Ahora que tienes lo básico instalado, necesitamos decirle a pajbot que (y cómo) se ejecute en un canal determinado. Pajbot corriendo en un solo canal, y con su sitio web para ese canal, se llamará una **instancia** de pajbot a partir de ahora.
 
-## Create an application with Twitch
+## Crear una aplicación con Twitch
 
-The first thing you need to do is to create an application for the bot instance. Registering an application gives you three important bits of data the bot needs to be able to access the Twitch API and allow users to log in to the website using their Twitch account: A client ID, The client secret, and the authentication redirect URI.
+Lo primero que tienes que hacer es crear una aplicación para la instancia del bot. Registrar una aplicación te da tres datos importantes que el bot necesita para poder acceder a la API de Twitch y permitir a los usuarios iniciar sesión en el sitio web utilizando su cuenta de Twitch: Un ID de cliente, el secreto de cliente y el URL de redireccionamiento.
 
-To create an application with Twitch, visit https://dev.twitch.tv/console/apps/create.
+Para crear una aplicación con Twitch, visita https://dev.twitch.tv/console/apps/create.
 
-- Under _Name_, enter the name you want users to see when they log into the website and have to confirm they want to grant you access to their account.
-- Under _OAuth Redirect URL_, enter the full URL users should be redirected to after they complete the log in procedure with Twitch. This should be `https://pleb-domain.com/login/authorized` (adjust domain name of course).
-- Under _Category_, you should pick _Chat Bot_, as it is the most appropriate option for pajbot.
+- En _Nombre_, introduce el nombre que quieres que los usuarios vean cuando se conecten al sitio web y tengan que confirmar que quieren concederte acceso a su cuenta.
+- En _URL de redireccionamiento de OAuth_, introduce la URL completa a la que los usuarios deben ser redirigidos después de completar el procedimiento de inicio de sesión con Twitch. Debería ser `https://tu-dominio.com/login/authorized` (ajustando el nombre del dominio, por supuesto).
+- En _Categoría_, deberías elegir _Chat Bot_, ya que es la opción más apropiada para pajbot.
 
-After you click "Create", you are given access to the **Client ID**. After clicking **New Secret**, you can also access your **Client Secret**. You will need these values in the next step - when you create the configuration file for your instance.
+Después de hacer clic en "Crear", se le da acceso a la **ID de cliente**. Después de hacer clic en **Nuevo secreto**, también puedes acceder a tu **Secreto del cliente**. Necesitará estos valores en el siguiente paso - cuando cree el archivo de configuración para su instancia.
 
-## Create a database schema
+## Crear un esquema de base de datos
 
-Each instance's data lives in the same database (`pajbot`, we created this earlier), but we separate the data by putting each instance into its own **schema**. To create a new schema for your instance, run:
-
-```bash
-sudo -u pajbot psql pajbot -c "CREATE SCHEMA pajbot1_streamername"
-```
-
-Remember the name of the schema you created! You'll need to enter it into the configuration file, which you will create and edit in the next step:
-
-## Create a configuration file
-
-There is an [example config file](../configs/example.ini) available for you to copy:
+Los datos de cada instancia viven en la misma base de datos (`pajbot`, la hemos creado antes), pero separamos los datos poniendo cada instancia en su propio **esquema**. Para crear un nuevo esquema para tu instancia, ejecuta:
 
 ```bash
-sudo -u pajbot cp /opt/pajbot/configs/example.ini /opt/pajbot/configs/streamer_name.ini
+sudo -u pajbot psql pajbot -c "CREATE SCHEMA pajbot1_nombrestreamer"
 ```
 
-The example config contains comments about what values you need to enter in what places. Edit the config with a text editor to adjust the values.
+Recuerda el nombre del esquema que has creado. Tendrás que introducirlo en el archivo de configuración, que crearás y editarás en el siguiente paso:
+
+## Crear un archivo de configuración
+
+Hay un [archivo de configuración de ejemplo](../configs/example.ini) disponible para que lo copies:
 
 ```bash
-sudo -u pajbot editor /opt/pajbot/configs/streamer_name.ini
+sudo -u pajbot cp /opt/pajbot/configs/example.ini /opt/pajbot/configs/nombre_streamer.ini
 ```
 
-## Set up the website with nginx
-
-Pajbot comes with pre-set nginx configuration files you only need to copy and edit lightly to reflect your installation.
+El ejemplo de configuración contiene comentarios sobre los valores que debes introducir en cada lugar. Edite la configuración con un editor de texto para ajustar los valores.
 
 ```bash
-sudo cp /opt/pajbot/install-docs/nginx-example.conf /etc/nginx/sites-available/streamer_name.your-domain.com.conf
-sudo ln -s /etc/nginx/sites-available/streamer_name.your-domain.com.conf /etc/nginx/sites-enabled/
+sudo -u pajbot editor /opt/pajbot/configs/nombre_streamer.ini
 ```
 
-You have to then edit the file, at the very least you will have to insert the correct streamer name instead of the example streamer name.
+## Configurar el sitio web con nginx
 
-The example configuration sets your website up over HTTPS, for which you need a certificate (`ssl_certificate` and `ssl_certificate_key`). There are many possible ways to get a certificate, which is why we can't offer a definitive guide that will work for everybody's setup. However, if you need help for this step, you can [find a guide here](./certbot-with-cloudflare/README.md) if you have set up your domain with **CloudFlare DNS**.
+Pajbot viene con archivos de configuración de nginx preconfigurados, sólo tienes que copiarlos y editarlos ligeramente para que reflejen tu instalación.
 
-Once you're done with your changes, test that the configuration has no errors:
+```bash
+sudo cp /opt/pajbot/install-docs/nginx-example.conf /etc/nginx/sites-available/nombre_streamer.tu-dominio.com.conf
+sudo ln -s /etc/nginx/sites-available/nombre_streamer.tu-dominio.com.conf /etc/nginx/sites-enabled/
+```
+
+A continuación, tienes que editar el archivo, como mínimo tendrás que insertar el nombre correcto del streamer en lugar del nombre del streamer de ejemplo.
+
+La configuración de ejemplo establece su sitio web a través de HTTPS, para lo cual necesita un certificado (`ssl_certificate` y `ssl_certificate_key`). Hay muchas maneras posibles de obtener un certificado, por lo que no podemos ofrecer una guía definitiva que funcione para la configuración de todo el mundo. Sin embargo, si necesitas ayuda para este paso, puedes [encontrar una guía aquí](./certbot-with-cloudflare/README.md) si has configurado tu dominio con **CloudFlare DNS**.
+
+Una vez que hayas terminado con tus cambios, prueba que la configuración no tiene errores:
 
 ```bash
 sudo nginx -t
 ```
 
-If this check is OK, you can now reload nginx:
+Si esta comprobación es correcta, ahora puedes recargar nginx:
 
 ```bash
 sudo systemctl reload nginx
 ```
 
-## Enable and start the service
+## Habilitar e iniciar el servicio
 
-To start and enable (i.e. run it on boot) pajbot, run:
+Para iniciar y habilitar (es decir, ejecutarlo en el arranque) pajbot, ejecuta:
 
 ```bash
-sudo systemctl enable --now pajbot@streamer_name pajbot-web@streamer_name
+sudo systemctl enable --now pajbot@nombre_streamer pajbot-web@nombre_streamer
 ```
 
-## Authenticate the bot
+## Autenticar el bot
 
-One last step: You need to give your pajbot instance access to use your bot account! For this purpose, visit the URL `https://streamer_name.your-domain.com/bot_login` and complete the login procedure to authorize the bot.
+Un último paso: Tienes que dar acceso a tu instancia de pajbot para usar tu cuenta de bot. Para ello, visita la URL `https://nombre_streamer.tu-dominio.com/bot_login` y completa el procedimiento de inicio de sesión para autorizar el bot.
 
-The bot will then automatically come online in chat within about 2-3 seconds of you completing the login process.
+El bot se conectará automáticamente al chat en unos 2-3 segundos después de que hayas completado el proceso de inicio de sesión.
 
-## Further steps
+## Otros pasos
 
-Congratulations! Your bot should be running by now, but there are some extra steps you may want to complete:
+¡Enhorabuena! Tu bot ya debería estar funcionando, pero hay algunos pasos adicionales que quizás quieras completar:
 
-- Ask the streamer to log in once by going to `https://streamer_name.your-domain.com/streamer_login` - If the streamer does this, the bot will be able to fetch who's a subscriber and keep the database up-to-date regularly. The bot will also then be able to change the game and title with the `!settitle` and `!setgame` commands. Alternatively the streamer could give the bot the [editor permission](https://help.twitch.tv/s/article/Managing-Roles-for-your-Channel?language=en_US#manage), this will also allow the bot to change the game and title from chat.
-- Add some basic commands:
+- Pídele al streamer que se conecte una vez yendo a `https://nombre_streamer.tu-dominio.com/streamer_login` - Si el streamer hace esto, el bot será capaz de buscar quién es un suscriptor y mantener la base de datos actualizada regularmente. El bot también podrá cambiar el juego y el título con los comandos `!settitle` y `!setgame`. Alternativamente, el streamer podría dar al bot el [permiso de editor](https://help.twitch.tv/s/article/Managing-Roles-for-your-Channel?language=es#manage), esto también permitirá al bot cambiar el juego y el título desde el chat.
+- Añade algunos comandos básicos:
 
-  Here's some ideas:
+  Aquí hay algunas ideas:
 
   ```
-  !add command ping --reply $(tb:bot_name) $(tb:version_brief) online for $(tb:bot_uptime)
-  !add command commands|help --reply $(tb:bot_name) commands available here: https://$(tb:bot_domain)/commands
-  !add command ecount --reply $(1) has been used $(ecount;1) times.
-  !add command epm --reply $(1) is currently being used $(epm;1) times per minute.
-  !add command uptime|downtime --reply $(broadcaster:name) has been $(tb:stream_status) for $(tb:status_length)
-  !add command points|p --reply $(usersource;1:name) has $(usersource;1:points|number_format) points
-  !add command lastseen --reply $(user;1:name) was last seen $(user;1:last_seen|time_since_dt) ago, and last active $(user;1:last_active|time_since_dt) ago.
-  !add command epmrecord --reply $(1) per minute record is $(epmrecord;1).
+  !add command ping --reply FeelsDankMan 🏓 $(tb:bot_name) $(tb:version_brief) || Online durante $(tb:bot_uptime)
+  !add command commands|help --reply Comandos disponibles en: https://$(tb:bot_domain)/commands
+  !add command ecount --reply $(1) ha sido usado $(ecount;1) veces
+  !add command epm --reply $(1) está siendo usado $(epm;1) veces por minutos
+  !add command uptime|downtime --reply $(broadcaster:name) ha estado $(tb:stream_status) durante $(tb:status_length)
+  !add command points|p --reply $(usersource;1:name) tiene $(usersource;1:points|number_format) puntos
+  !add command lastseen --reply $(user;1:name) fue visto por última vez hace $(user;1:last_seen|time_since_dt), y estuvo activo hace $(user;1:last_active|time_since_dt)
+  !add command epmrecord --reply $(1) tiene un récord por minuto de $(epmrecord;1)
   !add command profile --reply https://$(tb:bot_domain)/user/$(usersource;1:login)
   !add command overlay|clr --reply https://$(tb:bot_domain)/clr/overlay/12345
-  !add command playsounds --reply available playsounds are listed here: https://$(tb:bot_domain)/playsounds
-  !add command title --reply Current stream title: $(stream:title)
-  !add command game --reply Current stream game: $(stream:game)
-  !add command timeonline|watchtime --reply $(usersource;1:name) has spent $(usersource;1:minutes_in_chat_online|time_since_minutes) in online chat.
-  !add command timeoffline --reply $(usersource;1:name) has spent $(usersource;1:minutes_in_chat_offline|time_since_minutes) in offline chat.
+  !add command playsounds --reply Los sonidos disponibles están enlistados en: https://$(tb:bot_domain)/playsounds
+  !add command title --reply El título actual es: $(stream:title)
+  !add command game --reply La categoría actual es: $(stream:game)
+  !add command timeonline|watchtime --reply $(usersource;1:name) ha estado $(usersource;1:minutes_in_chat_online|time_since_minutes) en el chat online
+  !add command timeoffline --reply $(usersource;1:name) ha estado $(usersource;1:minutes_in_chat_offline|time_since_minutes) en el chat offline
   ```
 
-- Advanced command arguments can be found [here.](https://github.com/pajbot/pajbot/blob/1ed503003c7363ebc592d0945d6c31ab1107db30/pajbot/managers/command.py#L450-L464)
+- Los argumentos avanzados para comandos se pueden encontrar [aquí.](https://github.com/pajbot/pajbot/blob/1ed503003c7363ebc592d0945d6c31ab1107db30/pajbot/managers/command.py#L450-L464)
