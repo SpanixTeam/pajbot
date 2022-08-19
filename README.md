@@ -1,28 +1,28 @@
 # pajbot ![Python 4HEad](https://github.com/pajbot/pajbot/workflows/Python%204HEad/badge.svg)
 
-pajbot is a twitch chat bot created by [pajlada](http://twitch.tv/pajlada).  
+pajbot es un bot para chat de twitch creado por [pajlada](http://twitch.tv/pajlada).  
 [Website](https://pajbot.com)
 
-Note: pajbot is in **maintenance mode**.
-This means we focus on keeping the project alive by not allowing major overhauls of any pajbot system or any major features.
-Fixing bugs, updating dependencies and ensuring that code interacting with external APIs still function will be our main goal.
-Feature requests will not be accepted unless someone is willing to own the feature, and even then some features that change too much of the architecture won't be allowed.
-Current minimal supported Python version is **3.8**.
+Nota: pajbot está en **modo de mantenimiento**.
+Esto significa que nos centramos en mantener el proyecto vivo no permitiendo grandes revisiones de ningún sistema de pajbot ni de ninguna característica importante.
+Arreglar errores, actualizar dependencias y asegurar que el código que interactúa con APIs externas siga funcionando será nuestro principal objetivo.
+Las peticiones de características no serán aceptadas a menos que alguien esté dispuesto a poseer la característica, e incluso entonces algunas características que cambian demasiado la arquitectura no serán permitidas.
+La versión mínima de Python actualmente soportada es **3.8**.
 
-## Quick install
+## Instalación rápida
 
-1. Install library requirements by typing `./scripts/venvinstall.sh` in the root folder
-2. Copy `./configs/example.ini` to `./config.ini` and change the relevant lines in the file.
-3. Run the bot! `./main.py`
+1. Instalar los requisitos de la biblioteca escribiendo `./scripts/venvinstall.sh` en el directorio raíz
+2. Copiar `./configs/example.ini` a `./config.ini` y cambiar las líneas relevantes en el archivo.
+3. ¡Ejecuta el bot! `./main.py`
 
-## Detailed install
+## Instalación detallada
 
-You can find a detailed installation guide for **pajbot** in the [`install-docs` directory](./install-docs) of this repository.
+Puedes encontrar una guía de instalación detallada para **pajbot** en el [directorio `install-docs`](./install-docs) de este repositorio.
 
-## Run-time options
+## Opciones de ejecución
 
-Some values can be set to apply to your bot without modifying the config file, these are mostly for out-of-bot things.  
-They are configured using environment variables. The following options are available:
+Algunos valores pueden ser configurados para aplicarse a tu bot sin modificar el archivo de configuración, estos son principalmente para cosas fuera del bot.  
+Se configuran utilizando variables de entorno. Las siguientes opciones están disponibles:
 
 - `PB1_LOG_HIDE_TIMESTAMPS`  
-   If this option is set to `1`, all log entries will be printed without a timestamp prefix.
+   Si esta opción se establece en `1`, todas las entradas de registro se imprimirán sin un prefijo de marca de tiempo.
