@@ -1,3 +1,24 @@
+/* Works on Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #3d3e3f #1b1c1d;
+}
+
+/* Works on Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 15px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #1b1c1d;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #3d3e3f;
+  border-radius: 20px;
+  border: 3px solid #1b1c1d;
+}
+
 .pui.command,
 .pui.argument {
   font-family: monospace;
@@ -397,7 +418,7 @@ div.pui.class.undefined {
   }
   
   .chat .chat-message.whisper {
-    background-color: #e8d6ff;
+    background-color: #666666;
   }
   
   .chat.border {
