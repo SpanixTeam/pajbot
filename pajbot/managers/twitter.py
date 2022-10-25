@@ -33,7 +33,7 @@ class ClientProtocol(WebSocketClientProtocol):
 
         if self.manager.tweepy is None:
             log.warning(
-                "Unable to initialize tweet-provider connection since local twitter credentials are not configured"
+                "No se puede inicializar la conexión del proveedor de tweets porque las credenciales locales de twitter no están configuradas"
             )
             return
 
@@ -43,10 +43,10 @@ class ClientProtocol(WebSocketClientProtocol):
             try:
                 user_id = self.manager.tweepy.get_user(screen_name=screen_name).id
             except tweepy.errors.NotFound:
-                log.warn(f"Twitter user {screen_name} does not exist")
+                log.warn(f"El usuario de Twitter {screen_name} no existe")
                 continue
             except:
-                log.exception("Unhandled exception from tweepy.get_user (v1)")
+                log.exception("Excepción no controlada de tweepy.get_user (v1)")
                 continue
 
             user_ids.append(user_id)
@@ -68,13 +68,13 @@ class ClientProtocol(WebSocketClientProtocol):
                 and tweet["in_reply_to_screen_name"] is None
             ):
                 tweet_message = tweet_provider_stringify_tweet(tweet)
-                self.manager.bot.say(f"B) New cool tweet from {tweet['user']['screen_name']}: {tweet_message}")
-                log.debug(f"Got tweet: {message['data']}")
+                self.manager.bot.say(f"{tweet['user']['screen_name']} » {tweet_message}")
+                log.debug(f"Tengo un tweet: {message['data']}")
         else:
-            log.debug(f"Unhandled message from tweet-provider: {message}")
+            log.debug(f"Mensaje no gestionado del proveedor de tweets: {message}")
 
     def onClose(self, wasClean: bool, code: int, reason: str) -> None:
-        log.info(f"Disconnected from tweet-provider: {reason}")
+        log.info(f"Desconectado del proveedor de tweets: {reason}")
 
 
 class ClientFactory(WebSocketClientFactory, ReconnectingClientFactory):
@@ -83,18 +83,18 @@ class ClientFactory(WebSocketClientFactory, ReconnectingClientFactory):
 
     def buildProtocol(self, addr):
         if self.manager is None:
-            raise ValueError("ClientFactory's manager not initialized")
+            raise ValueError("El gestor de ClientFactory no se ha inicializado")
 
         proto = ClientProtocol(self.manager)
         proto.factory = self
         return proto
 
     def clientConnectionFailed(self, connector, reason) -> None:
-        log.debug(f"Connection failed to PBTwitterManager: {reason}")
+        log.debug(f"Error de conexión con PBTwitterManager: {reason}")
         self.retry(connector)
 
     def clientConnectionLost(self, connector, reason) -> None:
-        log.debug(f"Connection lost to PBTwitterManager: {reason}")
+        log.debug(f"Conexión perdida con PBTwitterManager: {reason}")
         self.retry(connector)
 
 
@@ -121,12 +121,12 @@ class MyStreamListener(tweepy.Stream):
             and not status.text.startswith("RT ")
             and status.in_reply_to_screen_name is None
         ):
-            log.debug("On status from tweepy: %s", status.text)
+            log.debug("Sobre el estado de tweepy: %s", status.text)
             tweet_message = stringify_tweet(status)
-            self.bot.say(f"B) New cool tweet from {status.user.screen_name}: {tweet_message}")
+            self.bot.say(f"{status.user.screen_name} » {tweet_message}")
 
     def on_request_error(self, status_code: int) -> None:
-        log.warning("Unhandled in twitter stream: %s", status_code)
+        log.warning("No se ha gestionado en el stream de Twitter: %s", status_code)
 
         super().on_error(status_code)
 
@@ -154,7 +154,7 @@ class GenericTwitterManager:
 
             self.twitter_client = tweepy.API(self.twitter_auth)
         except:
-            log.exception("Twitter authentication failed.")
+            log.exception("La autenticación de Twitter ha fallado.")
 
     def on_twitter_follow(self, _data: HandlerParam) -> None:
         log.info("TWITTER FOLLOW")
@@ -170,36 +170,36 @@ class GenericTwitterManager:
             with DBManager.create_session_scope() as db_session:
                 for user in db_session.query(TwitterUser):
                     if user.username is None:
-                        log.warning(f"Twitter user with DB ID {user.id} has a null username")
+                        log.warning(f"El usuario de Twitter con DB ID {user.id} tiene un nombre de usuario nulo")
                         continue
 
                     self.listener.relevant_users.append(user.username)
 
     def follow_user(self, username: str) -> bool:
-        """Add `username` to our relevant_users list."""
+        """Añadir `username` a nuestra lista de relevant_users."""
         if not self.listener:
-            log.error("No twitter listener set up")
+            log.error("No se ha configurado el listener de Twitter")
             return False
 
         if username in self.listener.relevant_users:
-            log.warning(f"Already following {username}")
+            log.warning(f"Ya está siguiendo a {username}")
             return False
 
         with DBManager.create_session_scope() as db_session:
             db_session.add(TwitterUser(username))
             self.listener.relevant_users.append(username)
-            log.info(f"Now following {username}")
+            log.info(f"Ahora siguiendo a {username}")
 
         return True
 
     def unfollow_user(self, username: str) -> bool:
-        """Stop following `username`, if we are following him."""
+        """Deja de seguir a `username`, si es que lo estamos siguiendo."""
         if not self.listener:
-            log.error("No twitter listener set up")
+            log.error("No se ha configurado el listener de Twitter")
             return False
 
         if username not in self.listener.relevant_users:
-            log.warning(f"Trying to unfollow someone we are not following (2) {username}")
+            log.warning(f"Intentar dejar de seguir a alguien a quien no seguimos (2) {username}")
             return False
 
         self.listener.relevant_users.remove(username)
@@ -207,11 +207,11 @@ class GenericTwitterManager:
         with DBManager.create_session_scope() as db_session:
             user = db_session.query(TwitterUser).filter_by(username=username).one_or_none()
             if not user:
-                log.warning("Trying to unfollow someone we are not following")
+                log.warning("Intentar dejar de seguir a alguien a quien no seguimos")
                 return False
 
             db_session.delete(user)
-            log.info(f"No longer following {username}")
+            log.info(f"Ya no sigue a {username}")
 
         return True
 
@@ -227,7 +227,7 @@ class GenericTwitterManager:
                         tweet_message = stringify_tweet(tweet)
                         return f"{tweet_message} ({time_since(now().timestamp(), created_at.timestamp(), time_format='short')} ago)"
             except Exception:
-                log.exception("Exception caught while getting last tweet")
+                log.exception("Excepción detectada al obtener el último tweet")
                 return "FeelsBadMan"
         else:
             return "Twitter not set up FeelsBadMan"
@@ -253,7 +253,7 @@ class TwitterManager(GenericTwitterManager):
                 self.check_twitter_connection()
                 bot.execute_every(60 * 5, self.check_twitter_connection)
         except:
-            log.exception("Twitter authentication failed.")
+            log.exception("La autenticación de Twitter ha fallado.")
 
     def initialize_twitter_stream(self) -> None:
         if self.twitter_stream is None:
@@ -264,13 +264,13 @@ class TwitterManager(GenericTwitterManager):
 
     def _run_twitter_stream(self) -> None:
         if self.twitter_client is None:
-            log.warn("Unable to run twitter stream: local twitter client not configured")
+            log.warn("No se puede ejecutar el stream de twitter: el cliente local de twitter no está configurado")
             return
 
         self.initialize_twitter_stream()
 
         if self.twitter_stream is None:
-            log.warn("Unable to run twitter stream: twitter stream failed to initialize")
+            log.warn("No se puede ejecutar el stream de twitter: el stream de twitter no se ha podido inicializar")
             return
 
         user_ids = []
@@ -279,10 +279,10 @@ class TwitterManager(GenericTwitterManager):
                 try:
                     twitter_user: tweepy.User = self.twitter_client.get_user(screen_name=user.username)
                 except tweepy.errors.NotFound:
-                    log.warn(f"Twitter user {user.username} does not exist")
+                    log.warn(f"El usuario de Twitter {user.username} no existe")
                     continue
                 except:
-                    log.exception("Unhandled exception from tweepy.get_user (v1)")
+                    log.exception("Excepción no controlada de tweepy.get_user (v1)")
                     continue
 
                 user_ids.append(twitter_user.id_str)
@@ -293,11 +293,11 @@ class TwitterManager(GenericTwitterManager):
         try:
             self.twitter_stream.filter(follow=user_ids, threaded=False)
         except:
-            log.exception("Exception caught in twitter stream _run")
+            log.exception("Excepción capturada en el twitter stream _run")
 
     def check_twitter_connection(self) -> None:
-        """Check if the twitter stream is running.
-        If it's not running, try to restart it.
+        """Comprueba si el stream de Twitter está en marcha.
+        Si no está funcionando, intenta reiniciarlo.
         """
         if self.twitter_stream and self.twitter_stream.running:
             return
@@ -307,7 +307,7 @@ class TwitterManager(GenericTwitterManager):
             t.daemon = True
             t.start()
         except:
-            log.exception("Caught exception while checking twitter connection")
+            log.exception("Capturada una excepción al comprobar la conexión con twitter")
 
     def quit(self) -> None:
         if self.twitter_stream:
@@ -334,7 +334,7 @@ class PBTwitterManager(GenericTwitterManager):
 
         self.reload()
 
-        log.info("pajbot twitter manager initialized")
+        log.info("El gestor de twitter de pajbot se ha inicializado")
 
         from twisted.internet import reactor
 
@@ -350,13 +350,13 @@ class PBTwitterManager(GenericTwitterManager):
 
     def follow_user(self, username: str) -> bool:
         if self.twitter_client is None:
-            log.warn("Unable to forward follow to twitter_manager: local twitter client not configured")
+            log.warn("No se puede reenviar el seguimiento a twitter_manager: el cliente local de twitter no está configurado")
             return False
 
         ws_client = PBTwitterManager.client
 
         if ws_client is None:
-            log.warn("Unable to forward follow to twitter_manager: not connected")
+            log.warn("No se puede reenviar el seguimiento a twitter_manager: no está conectado")
             return False
 
         ret = super().follow_user(username)
@@ -364,10 +364,10 @@ class PBTwitterManager(GenericTwitterManager):
             try:
                 user = self.twitter_client.get_user(screen_name=username)
             except tweepy.errors.NotFound:
-                log.warn(f"Twitter user {username} does not exist")
+                log.warn(f"El usuario de Twitter {username} no existe")
                 return False
             except:
-                log.exception("Unhandled exception from tweepy.get_user (v1)")
+                log.exception("Excepción no controlada de tweepy.get_user (v1)")
                 return False
 
             msg = {"type": "insert_subscriptions", "data": [user.id]}
@@ -377,13 +377,13 @@ class PBTwitterManager(GenericTwitterManager):
 
     def unfollow_user(self, username: str) -> bool:
         if self.twitter_client is None:
-            log.warn("Unable to forward unfollow to twitter_manager: local twitter client not configured")
+            log.warn("No se puede reenviar el unfollow a twitter_manager: el cliente local de twitter no está configurado")
             return False
 
         ws_client = PBTwitterManager.client
 
         if ws_client is None:
-            log.warn("Unable to forward unfollow to twitter_manager: not connected")
+            log.warn("No se puede reenviar el unfollow a twitter_manager: no está conectado")
             return False
 
         ret = super().unfollow_user(username)
@@ -391,10 +391,10 @@ class PBTwitterManager(GenericTwitterManager):
             try:
                 user = self.twitter_client.get_user(screen_name=username)
             except tweepy.errors.NotFound:
-                log.warn(f"Twitter user {username} does not exist")
+                log.warn(f"El usuario de Twitter {username} no existe")
                 return False
             except:
-                log.exception("Unhandled exception from tweepy.get_user (v1)")
+                log.exception("Excepción no controlada de tweepy.get_user (v1)")
                 return False
 
             msg = {"type": "remove_subscriptions", "data": [user.id]}
