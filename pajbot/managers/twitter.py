@@ -68,7 +68,7 @@ class ClientProtocol(WebSocketClientProtocol):
                 and tweet["in_reply_to_screen_name"] is None
             ):
                 tweet_message = tweet_provider_stringify_tweet(tweet)
-                self.manager.bot.say(f".me {tweet['user']['screen_name']} » {tweet_message}")
+                self.manager.bot.me(f"🐦: {tweet['user']['screen_name']} » {tweet_message}")
                 log.debug(f"Tengo un tweet: {message['data']}")
         else:
             log.debug(f"Mensaje no gestionado del proveedor de tweets: {message}")
