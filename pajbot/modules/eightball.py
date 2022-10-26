@@ -10,12 +10,12 @@ log = logging.getLogger(__name__)
 class EightBallModule(BaseModule):
     ID = __name__.split(".")[-1]
     NAME = "8-ball"
-    DESCRIPTION = "Gives users access to the !8ball command!"
+    DESCRIPTION = "Permite a los usuarios acceder al comando !8ball"
     CATEGORY = "Game"
     SETTINGS = [
         ModuleSetting(
             key="online_global_cd",
-            label="Global cooldown (seconds)",
+            label="Cooldown Global (segundos)",
             type="number",
             required=True,
             placeholder="",
@@ -24,7 +24,7 @@ class EightBallModule(BaseModule):
         ),
         ModuleSetting(
             key="online_user_cd",
-            label="Per-user cooldown (seconds)",
+            label="Cooldown por-usuario (segundos)",
             type="number",
             required=True,
             placeholder="",
@@ -36,44 +36,44 @@ class EightBallModule(BaseModule):
     def __init__(self, bot):
         super().__init__(bot)
         self.phrases = [
-            "sure",
-            "are you kidding?!",
-            "yeah",
-            "no",
-            "i think so",
-            "don't bet on it",
-            "ja",
-            "doubtful",
-            "for sure",
-            "forget about it",
-            "nein",
-            "maybe",
+            "Seguro",
+            "¡¿Estás bromeando?!",
+            "Sí",
+            "No",
+            "Creo que sí",
+            "No apuestes por ello",
+            "Já",
+            "Dudoso",
+            "Seguro",
+            "Olvídate de ello",
+            "Nein",
+            "Tal vez",
             "Kappa Keepo PogChamp",
-            "sure",
-            "i dont think so",
-            "it is so",
-            "leaning towards no",
-            "look deep in your heart and you will see the answer",
-            "most definitely",
-            "most likely",
-            "my sources say yes",
-            "never",
-            "nah m8",
-            "might actually be yes",
-            "no.",
-            "outlook good",
-            "outlook not so good",
-            "perhaps",
-            "mayhaps",
-            "that's a tough one",
-            "idk kev",
-            "don't ask that",
-            "the answer to that isn't pretty",
-            "the heavens point to yes",
-            "who knows?",
-            "without a doubt",
-            "yesterday it would've been a yes, but today it's a yep",
-            "you will have to wait",
+            "Seguro",
+            "No lo creo",
+            "Es así",
+            "Me inclino hacia el no",
+            "Mira en el fondo de tu corazón y verás la respuesta",
+            "Definitivamente",
+            "Lo más probable",
+            "Mis fuentes dicen que sí",
+            "Nunca",
+            "Nah m8",
+            "Podría ser que sí",
+            "No",
+            "Perspectiva buena",
+            "Perspectiva no tan buena",
+            "Quizás",
+            "Tal vez",
+            "Eso es difícil",
+            "No sé, Kev",
+            "No preguntes eso",
+            "La respuesta a eso no es bonita",
+            "Los cielos apuntan al sí",
+            "¿Quién sabe?",
+            "Sin duda",
+            "Ayer hubiera sido un sí, pero hoy es un sis",
+            "Tendrás que esperar",
         ]
 
         self.emotes = [
@@ -109,21 +109,21 @@ class EightBallModule(BaseModule):
 
         phrase = random.choice(self.phrases)
         emote = random.choice(self.emotes)
-        bot.me(f"{source}, the 8-ball says... {phrase} {emote}")
+        bot.me(f"{source}, la bola-8 dice... {phrase} {emote}")
 
     def load_commands(self, **options):
         self.commands["8ball"] = Command.raw_command(
             self.eightball_command,
             delay_all=self.settings["online_global_cd"],
             delay_user=self.settings["online_user_cd"],
-            description="Need help with a decision? Use the !8ball command!",
+            description="¿Necesitas ayuda para tomar una decisión? Utiliza el comando !8ball",
             examples=[
                 CommandExample(
                     None,
                     "!8ball",
-                    chat="user:!8ball Should I listen to gachimuchi?\n"
-                    "bot:pajlada, the 8-ball says... Of course you should!",
-                    description="Ask the 8ball an important question",
+                    chat="user:!8ball ¿Debería escuchar gachimuchi?\n"
+                    "bot:pajlada, la bola-8 dice... ¡Por supuesto que sí!",
+                    description="Hazle una pregunta importante a la bola 8",
                 ).parse()
             ],
         )
