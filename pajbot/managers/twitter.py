@@ -68,7 +68,7 @@ class ClientProtocol(WebSocketClientProtocol):
                 and tweet["in_reply_to_screen_name"] is None
             ):
                 tweet_message = tweet_provider_stringify_tweet(tweet)
-                self.manager.bot.say(f".me {tweet['user']['screen_name']} » {tweet_message}")
+                self.manager.bot.me(f"🐦: {tweet['user']['screen_name']} » {tweet_message}")
                 log.debug(f"Tengo un tweet: {message['data']}")
         else:
             log.debug(f"Mensaje no gestionado del proveedor de tweets: {message}")
@@ -123,7 +123,7 @@ class MyStreamListener(tweepy.Stream):
         ):
             log.debug("Sobre el estado de tweepy: %s", status.text)
             tweet_message = stringify_tweet(status)
-            self.bot.say(f".me {status.user.screen_name} » {tweet_message}")
+            self.bot.me(f"🐦: {status.user.screen_name} » {tweet_message}")
 
     def on_request_error(self, status_code: int) -> None:
         log.warning("No se ha gestionado en el stream de Twitter: %s", status_code)
