@@ -11,24 +11,24 @@
     <tbody>
         <tr>
             <th>Created at</th>
-            <td><span class="date">{{ highlight.created_at|time_ago }} ago | {{ highlight.created_at|date_format }}</span></td>
+            <td><span class="date"> Hace {{ highlight.created_at|time_ago }} | {{ highlight.created_at|date_format }}</span></td>
         </tr>
         {% if highlight.description %}
         <tr>
-            <th>Description</th>
+            <th>Descripción</th>
             <td>{{ highlight.description }}</td>
         </tr>
         {% endif %}
         {% if user %}
         <tr>
-            <th>Created by</th>
+            <th>Creado por</th>
             <td>{% include 'user/username_link_nobadge.html' %}</td>
         </tr>
         {% endif %}
         {% set user = highlight.last_edited_by_user %}
         {% if user %}
         <tr>
-            <th>Last edited by</th>
+            <th>Última vez editado por</th>
             <td>{% include 'user/username_link_nobadge.html' %}</td>
         </tr>
         {% endif %}
@@ -42,7 +42,7 @@
         </tr>
         <tr>
             <th>Offset</th>
-            <td>{{ highlight.highlight_offset }} seconds</td>
+            <td>{{ highlight.highlight_offset }} segundos</td>
         </tr>
     </tbody>
 </table>

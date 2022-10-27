@@ -37,7 +37,7 @@
           <div class="ui transparent icon input">
               <form id="usersearch">
                   <div class="ui action input">
-                      <input type="text" name="username" class="username" placeholder="Username" style="background-color: #1b1c1d !important; color: white !important; border-color: rgba(255, 255, 255, 0.1) !important;">
+                      <input type="text" name="username" class="username" placeholder="Usuario" style="background-color: #1b1c1d !important; color: white !important; border-color: rgba(255, 255, 255, 0.1) !important;">
                       <button class="ui icon button" style="opacity: 50%;">
                           <i class="search icon"></i>
                       </button>
@@ -58,37 +58,37 @@
     <div class="ui container">
       <div class="ui stackable inverted divided equal height stackable grid">
         <div class="three wide column">
-          <h4 class="ui inverted header">Community</h4>
+          <h4 class="ui inverted header">Comunidad</h4>
           <div class="ui inverted link list">
-           <a class="item" href="https://github.com/pajbot/pajbot/issues"><i class="warning circle icon"></i> Submit an Issue</a>
-           <a class="item" href="/contact"><i class="mail icon"></i> Contact</a>
-           <a class="item" href="https://twitter.com/pajlada"><i class="twitter icon"></i> Created by @pajlada</a>
+           <a class="item" href="https://github.com/pajbot/pajbot/issues"><i class="warning circle icon"></i> Envía un Problema</a>
+           <a class="item" href="/contact"><i class="mail icon"></i> Contacto</a>
+           <a class="item" href="https://twitter.com/pajlada"><i class="twitter icon"></i> Creado por @pajlada</a>
           </div>
         </div>
         <div class="three wide column">
           <h4 class="ui inverted header">Network</h4>
           <div class="ui inverted link list">
-           <a class="item" href="https://github.com/pajbot/pajbot/"><i class="github icon"></i> GitHub Repo</a>
-           <a class="item" href="http://pajbot.com/"><i class="sitemap icon"></i> Other Bots</a>
+           <a class="item" href="https://github.com/SpanixTeam/pajbot/"><i class="github icon"></i> Repo de GitHub</a>
+           <a class="item" href="http://pajbot.com/"><i class="sitemap icon"></i> Otros Bots</a>
           </div>
         </div>
         <div class="four wide column">{% if session.user %}
-          <h4 class="ui inverted header">Hello {{ session.user.name }}</h4>
+          <h4 class="ui inverted header">Hola {{ session.user.name }}</h4>
           <div class="ui inverted link list">
-           <a class="item" href="/user/{{ session.user.login }}"><i class="user icon"></i> Profile</a>
+           <a class="item" href="/user/{{ session.user.login }}"><i class="user icon"></i> Perfil</a>
            {% if not session.user.level or session.user.level >= 500 %}
-             <a class="item" href="/admin/"><i class="legal icon"></i> Admin Zone</a>
+             <a class="item" href="/admin/"><i class="legal icon"></i> Zona Admin</a>
            {% endif %}
-           <a class="item" href="/logout?returnTo={{ request.path }}"><i class="sign out icon"></i> Log out</a>{% else %}
-          <h4 class="ui inverted header">Login <i class="sign in icon"></i></h4>
+           <a class="item" href="/logout?returnTo={{ request.path }}"><i class="sign out icon"></i> Salir</a>{% else %}
+          <h4 class="ui inverted header">Ingresar <i class="sign in icon"></i></h4>
           <div class="ui inverted link list">
-          <a href="/login?returnTo={{ request.path }}" class="ui twitch button"><i class="twitch icon"></i>Login with Twitch</a>{% endif %}
+          <a href="/login?returnTo={{ request.path }}" class="ui twitch button"><i class="twitch icon"></i>Conectar con Twitch</a>{% endif %}
           </div>
         </div>
       </div>
       <div class="row">
        <div class="column"><br />
-        <em style="color: #ccc;">Version: {{ version }}</em>{% if last_commit is not none %} &mdash; <em style="color: #ccc;">Last commit: {{ last_commit }}</em>{% endif %}
+        <em style="color: #ccc;">Versión: {{ version }}</em>{% if last_commit is not none %} &mdash; <em style="color: #ccc;">Último commit: {{ last_commit }}</em>{% endif %}
        </div>
     </div>
   </div>

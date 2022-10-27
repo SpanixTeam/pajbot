@@ -5,12 +5,12 @@
 {% if created %}
 <div class="ui success message">
     <i class="close icon"></i>
-    <div class="header">Your Timer was created successfully.</div>
+    <div class="header">Su temporizador ha sido creado con éxito.</div>
 </div>
 {% elif edited %}
 <div class="ui success message">
     <i class="close icon"></i>
-    <div class="header">Your Timer was edited successfully.</div>
+    <div class="header">Su temporizador ha sido editado con éxito.</div>
 </div>
 {% endif %}
 <button class="ui button create-timer green inverted"><i class="icon add"></i> Create Timer</button>
@@ -18,12 +18,12 @@
 <table class="ui table very basic inverted">
     <thead>
         <tr>
-            <th class="collapsing">Name</th>
-            <th class="collapsing">Interval online (minutes)</th>
-            <th class="collapsing">Interval offline (minutes)</th>
-            <th>Message</th>
-            <th>Enabled</th>
-            <th>Actions</th>
+            <th class="collapsing">Nombre</th>
+            <th class="collapsing">Intervalo Online (Minutos)</th>
+            <th class="collapsing">Intervalo Offline (Minutos)</th>
+            <th>Mensaje</th>
+            <th>Habilitado</th>
+            <th>Acciones</th>
         </tr>
     </thead>
     <tbody>
@@ -40,15 +40,15 @@
 </table>
 <div class="ui modal remove-timer">
     <i class="close icon"></i>
-    <div class="header"><p>Confirm Action</p></div>
+    <div class="header"><p>Confirmar Acción</p></div>
     <div class="content">
         <div class="description">
-            <p>Are you sure you want to remove this timer? This action is irreversible.</p>
+            <p>¿Está seguro de que quiere eliminar este temporizador? Esta acción es irreversible.</p>
         </div>
     </div>
     <div class="actions">
-        <div class="ui approve inverted button">Remove</div>
-        <div class="ui cancel inverted button">Cancel</div>
+        <div class="ui approve inverted button">Remover</div>
+        <div class="ui cancel inverted button">Cancelar</div>
     </div>
 </div>
 {% endblock %}

@@ -37,11 +37,11 @@ def init(app):
         # Menu items that are shown for normal users
         menu_items: List[MenuItem] = [
             MenuItem("/", "home", "Home"),
-            MenuItem("/commands", "commands", "Commands"),
-            MenuItem("/points", "points", "Points", "chatters_refresh" in enabled_modules),
-            MenuItem("/stats", "stats", "Stats"),
+            MenuItem("/commands", "commands", "Comandos"),
+            MenuItem("/points", "points", "Puntos", "chatters_refresh" in enabled_modules),
+            MenuItem("/stats", "stats", "Estadísticas"),
             MenuItem("/decks", "decks", "Decks", "deck" in enabled_modules),
-            MenuItem("/playsounds", "user_playsounds", "Playsounds", "playsound" in enabled_modules),
+            MenuItem("/playsounds", "user_playsounds", "Sonidos", "playsound" in enabled_modules),
         ]
 
         # Menu items that are shown to admin when in an /admin page
@@ -55,14 +55,14 @@ def init(app):
                     MenuItem("/admin/links/whitelist", "admin_links_whitelist", "Whitelisted links"),
                 ],
                 "filters",
-                "Filters",
+                "Filtros",
             ),
-            MenuItem("/admin/commands", "admin_commands", "Commands"),
+            MenuItem("/admin/commands", "admin_commands", "Comandos"),
             MenuItem("/admin/timers", "admin_timers", "Timers"),
-            MenuItem("/admin/moderators", "admin_moderators", "Moderators"),
-            MenuItem("/admin/modules", "admin_modules", "Modules"),
-            MenuItem("/admin/playsounds", "admin_playsounds", "Playsounds"),
-            MenuItem("/admin/streamer", "admin_streamer", "Streamer Info"),
+            MenuItem("/admin/moderators", "admin_moderators", "Moderadores"),
+            MenuItem("/admin/modules", "admin_modules", "Módulos"),
+            MenuItem("/admin/playsounds", "admin_playsounds", "Sonidos", "playsound" in enabled_modules),
+            MenuItem("/admin/streamer", "admin_streamer", "Info del Streamer"),
         ]
 
         data = {

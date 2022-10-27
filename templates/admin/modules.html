@@ -1,17 +1,17 @@
 {% extends "admin/layout.html" %}
 {% set active_page = 'admin_modules' %}
-{% block title %}Modules{% endblock %}
+{% block title %}Módulos{% endblock %}
 {% block body %}
-<h2>Modules</h2>
+<h2>Módulos</h2>
 <div id="modules">
     <table class="ui sortable very basic table collapsing inverted">
         <thead>
             <tr>
-                <th class="collapsing">Module</th>
-                <th class="collapsing">Category</th>
-                <th>Description</th>
-                <th class="no-sort collapsing">Enabled</th>
-                <th class="no-sort collapsing">Actions</th>
+                <th class="collapsing">Módulo</th>
+                <th class="collapsing">Categoría</th>
+                <th>Descripción</th>
+                <th class="no-sort collapsing">Habilitado</th>
+                <th class="no-sort collapsing">Acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -29,7 +29,7 @@
                     {% endif %}
                 </td>
                 <td class="right aligned collapsing">
-                <button class="ui compact button edit-row inverted" {{- 'disabled' if session.user.level < row.CONFIGURE_LEVEL else '' -}}><i class="icon setting"></i>Configure</button></td>
+                <button class="ui compact button edit-row inverted" {{- 'disabled' if session.user.level < row.CONFIGURE_LEVEL else '' -}}><i class="icon setting"></i>Configurar</button></td>
             </tr>
 {% endfor %}
         </tbody>

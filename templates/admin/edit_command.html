@@ -1,24 +1,24 @@
 {% extends "admin/layout.html" %}
 {% set active_page = 'admin_commands' %}
-{% block title %}Edit Command{% endblock %}
+{% block title %}Editar Comando{% endblock %}
 {% block body %}
 {% set data_available = [
     ('ID', False, command.id, 'id', 'int', ''),
     ('Aliases', False, command.command, 'command', 'string', ''),
-    ('Enabled', True, command.enabled, 'enabled', 'boolean', ''),
-    ('Level', True, command.level, 'level', 'int', ''),
-    ('Global CD', True, command.delay_all, 'delay_all', 'int', ' seconds'),
-    ('User CD', True, command.delay_user, 'delay_user', 'int', ' seconds'),
-    ('Cost', True, command.cost, 'cost', 'int', ''),
-    ('Whisperable', True, command.can_execute_with_whisper, 'can_execute_with_whisper', 'boolean', ''),
-    ('Sub only', True, command.sub_only, 'sub_only', 'boolean', ''),
-    ('Mod only', True, command.mod_only, 'mod_only', 'boolean', ''),
-    ('Check message', True, command.run_through_banphrases, 'run_through_banphrases', 'boolean', ''),
-    ('Use global cooldown module', True, command.use_global_cd, 'use_global_cd', 'boolean', ''),
+    ('Habilitado', True, command.enabled, 'enabled', 'boolean', ''),
+    ('Nivel', True, command.level, 'level', 'int', ''),
+    ('CD Global', True, command.delay_all, 'delay_all', 'int', ' seconds'),
+    ('CD de Usuario', True, command.delay_user, 'delay_user', 'int', ' seconds'),
+    ('Costo', True, command.cost, 'cost', 'int', ''),
+    ('Susurrable', True, command.can_execute_with_whisper, 'can_execute_with_whisper', 'boolean', ''),
+    ('Sólo Sub', True, command.sub_only, 'sub_only', 'boolean', ''),
+    ('Sólo Mod', True, command.mod_only, 'mod_only', 'boolean', ''),
+    ('Revisar Mensaje', True, command.run_through_banphrases, 'run_through_banphrases', 'boolean', ''),
+    ('Usar el cooldown global del módulo', True, command.use_global_cd, 'use_global_cd', 'boolean', ''),
 ] %}
-<p>Columns in yellow mark an unsaved change.</p>
-<p>Click the "Save Changes" button below to confirm your changes.</p>
-<h2>Command</h2>
+<p>Las columnas en amarillo marcan un cambio no guardado.</p>
+<p>Haga clic en el botón "Guardar Cambios" para confirmar los cambios.</p>
+<h2>Comando</h2>
 <table class="ui very basic table editcommand celled command inverted">
     <tbody>
         {% for label, editable, value, name, type, suffix in data_available %}
@@ -30,18 +30,18 @@
             <td class="buttons two wide right aligned">
                 {% if editable %}
                 <div class="ui small compact basic icon buttons display">
-                    <button title="Edit value" class="ui button icon edit"><i class="icon edit outline"></i></button>
+                    <button title="Editar Valor" class="ui button icon edit"><i class="icon edit outline"></i></button>
                 </div>
                 <div class="ui small compact basic icon buttons edit">
-                    <button title="Cancel changes" class="ui button icon cancel"><i class="icon red cancel"></i></button>
-                    <button title="Confirm changes" class="ui button icon save"><i class="icon green save"></i></button>
+                    <button title="Cancelar Cambios" class="ui button icon cancel"><i class="icon red cancel"></i></button>
+                    <button title="Confirmar Cambios" class="ui button icon save"><i class="icon green save"></i></button>
                 </div>
                 {% endif %}
             </td>
             <td class="value left aligned twelve wide">
                 <div class="display" data-value="{{ value }}"><span class="value">
                     {% if type == 'boolean' %}
-                        {{ 'Yes' if value == 1 else 'No' }}
+                        {{ 'Sí' if value == 1 else 'No' }}
                     {% else %}
                         {{ value }}
                     {% endif %}
@@ -50,7 +50,7 @@
                     {% if type == 'boolean' %}
                     <div class="ui checkbox">
                         <input id="cb-{{ name }}" type="checkbox" />
-                        <label for="cb-{{ name }}">{{ 'Yes' if value == 1 else 'No' }}</label>
+                        <label for="cb-{{ name }}">{{ 'Sí' if value == 1 else 'No' }}</label>
                     </div>
                     {% else %}
                     <div class="ui compact input{{ ' right labeled' if suffix|length > 0 else '' }}">
@@ -71,8 +71,8 @@
 
 {% if command.action.type == 'message' %}
 {% set data_available = [
-    ('Reply Type', True, command.action.subtype, 'action_type', 'list(say:Say,whisper:Whisper,me:Me,announce:Announce,reply:Reply)', ''),
-    ('Response', True, command.action.response, 'action_message', 'string', ''),
+    ('Tipo de Respuesta', True, command.action.subtype, 'action_type', 'list(say:Decir,whisper:Susurro,me:Me,announce:Anuncio,reply:Respuesta)', ''),
+    ('Respuesta', True, command.action.response, 'action_message', 'string', ''),
 ] %}
 {% elif command.action.type == 'func' %}
 {% set data_available = [
@@ -80,7 +80,7 @@
     ('Callback', False, command.action.cb.__name__, 'action_cb', 'string', ''),
 ] %}
 {% endif %}
-<h2>Action</h2>
+<h2>Acción</h2>
 <table class="ui very basic table editcommand celled action inverted">
     <tbody>
         {% for label, editable, value, name, type, suffix in data_available %}
@@ -95,18 +95,18 @@
             <td class="buttons two wide right aligned">
                 {% if editable %}
                 <div class="ui small compact basic icon buttons display">
-                    <button title="Edit value" class="ui button icon edit"><i class="icon edit outline"></i></button>
+                    <button title="Editar valor" class="ui button icon edit"><i class="icon edit outline"></i></button>
                 </div>
                 <div class="ui small compact basic icon buttons edit">
-                    <button title="Cancel changes" class="ui button icon cancel"><i class="icon red cancel"></i></button>
-                    <button title="Confirm changes" class="ui button icon save"><i class="icon green save"></i></button>
+                    <button title="Cancelar Cambios" class="ui button icon cancel"><i class="icon red cancel"></i></button>
+                    <button title="Confirmar Cambios" class="ui button icon save"><i class="icon green save"></i></button>
                 </div>
                 {% endif %}
             </td>
             <td class="value left aligned twelve wide">
                 <div class="display" data-value="{{ value }}"><span class="value">
                     {% if type == 'boolean' %}
-                        {{ 'Yes' if value == 1 else 'No' }}
+                        {{ 'Sí' if value == 1 else 'No' }}
                     {% else %}
                         {{ value }}
                     {% endif %}
@@ -115,7 +115,7 @@
                     {% if type == 'boolean' %}
                     <div class="ui checkbox">
                         <input id="cb-{{ name }}" type="checkbox" />
-                        <label for="cb-{{ name }}">{{ 'Yes' if value == 1 else 'No' }}</label>
+                        <label for="cb-{{ name }}">{{ 'Sí' if value == 1 else 'No' }}</label>
                     </div>
                     {% elif type == 'list' %}
                     <div class="ui dropdown">
@@ -145,11 +145,11 @@
 </table>
 
 {% if user.level >= command.level %}
-<button class="ui disabled button large green icon save-changes inverted"><i class="icon save"></i> <strong>Save Changes</strong></button>
+<button class="ui disabled button large green icon save-changes inverted"><i class="icon save"></i> <strong>Guardar Cambios</strong></button>
 {% else %}
-<p>You cannot modify this command, because your level is too low.</p>
+<p>No puedes modificar este comando, porque tu nivel es demasiado bajo.</p>
 {% endif %}
-<a href="/admin/commands/#c{{ command.id }}">Go to command</a>
+<a href="/admin/commands/#c{{ command.id }}">Ir al comando</a>
 {% endblock %}
 {% block footer %}
 <script type="text/javascript">

@@ -1,9 +1,9 @@
 {% extends "layout.html" %}
 {% set active_page = 'points' %}
-{% block title %}Points{% endblock %}
+{% block title %}Puntos{% endblock %}
 {% block body %}
 {% if chatters_refresh_enabled and (chatters_refresh_settings["base_points_sub"] > 0 or chatters_refresh_settings["base_points_pleb"] > 0) %}
-    <h2>Description</h2>
+    <h2>Descripción</h2>
 
     {% set offline_chat_multiplier = chatters_refresh_settings["offline_chat_multiplier"] / 100 %}
     {% set offline_points_sub = (chatters_refresh_settings["base_points_sub"] * offline_chat_multiplier)|round|int %}
@@ -11,42 +11,42 @@
 
     {% if chatters_refresh_settings["base_points_sub"] > 0 %}
         <p>
-            <i class="large icon pin"></i>Subscribers gain <strong>{{ chatters_refresh_settings["base_points_sub"]|with_unit("point") }} every {{ chatters_refresh_interval|with_unit("minute") }}</strong> of watching the stream
+            <i class="large icon pin"></i>Suscriptores obtienen <strong>{{ chatters_refresh_settings["base_points_sub"]|with_unit("punto") }} cada {{ chatters_refresh_interval|with_unit("minuto") }}</strong> de ver el directo
                 {%- if offline_points_sub > 0 -%}
-                    , and {{ offline_points_sub|with_unit("point") }} for every {{ chatters_refresh_interval|with_unit("minute") }} of being in offline chat
+                    , y {{ offline_points_sub|with_unit("punto") }} por cada {{ chatters_refresh_interval|with_unit("minuto") }} de estar en el chat offline
                 {%- endif -%}
             .
         </p>
     {% endif %}
     {% if chatters_refresh_settings["base_points_pleb"] > 0 %}
         <p>
-            <i class="large icon pin"></i>Non-Subscribers gain <strong>{{ chatters_refresh_settings["base_points_pleb"]|with_unit("point") }} every {{ chatters_refresh_interval|with_unit("minute") }}</strong> of watching the stream
+            <i class="large icon pin"></i>No-Suscriptores obtienen <strong>{{ chatters_refresh_settings["base_points_pleb"]|with_unit("punto") }} cada {{ chatters_refresh_interval|with_unit("minuto") }}</strong> de ver el directo
                 {%- if offline_points_pleb > 0 -%}
-                    , and {{ offline_points_pleb|with_unit("point") }} for every {{ chatters_refresh_interval|with_unit("minute") }} of being in offline chat
+                    , y {{ offline_points_pleb|with_unit("punto") }} por cada {{ chatters_refresh_interval|with_unit("minuto") }} de estar en el chat offline
                 {%- endif -%}
             .
         </p>
     {% endif %}
 {% endif %}
 {{ custom_content }}
-<h2>Check your own Points and Rank</h2>
+<h2>Revisa tus propios Puntos y Rango</h2>
 <div id="check_points" class="ui form">
     <form>
-        <div class="field username">
-            <input type="text" placeholder="Username">
+        <div class="field username">s
+            <input type="text" placeholder="Usuario">
         </div>
-        <button class="ui submit button inverted">Submit</button>
+        <button class="ui submit button">Enviar</button>
     </form>
     <div class="ui response hidden"></div>
 </div>
-<h2>Points Leaderboard</h2>
+<h2>Tabla de Puntos</h2>
 <div id="top_users">
     <table class="ui very basic table collapsing inverted">
         <thead>
             <tr>
-                <th>Rank</th>
+                <th>Rango</th>
                 <th>Username</th>
-                <th>Points</th>
+                <th>Puntos</th>
             </tr>
         </thead>
         <tbody>
@@ -75,7 +75,7 @@ $('#check_points .submit.button')
         var el = $('#check_points .response');
         el.addClass('message green');
         el.removeClass('red');
-        el.html('User <a href="/user/' + response.login + '"><strong class="username">' + response.name + '</strong></a> has <strong class="points">' + response.points + '</strong> points and is ranked <strong class="rank">' + response.points_rank + '</strong>.');
+        el.html('El usuario <a href="/user/' + response.login + '"><strong class="username">' + response.name + '</strong></a> tiene <strong class="points">' + response.points + '</strong> puntos y su rango es <strong class="rank">' + response.points_rank + '</strong>.');
         if (el.hasClass('hidden')) {
             el.transition({
                 animation: 'slide down',
@@ -87,7 +87,7 @@ $('#check_points .submit.button')
         var el = $('#check_points .response');
         el.addClass('message red');
         el.removeClass('green');
-        el.html('No user with the name <strong class="username">XXX</strong> found.');
+        el.html('No se ha encontrado ningún usuario con el nombre <strong class="username">XXX</strong>.');
         el.find('strong.username').text($('#check_points div.field.username input').val());
         if (el.hasClass('hidden')) {
             el.transition({

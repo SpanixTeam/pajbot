@@ -1,68 +1,68 @@
 {% extends "admin/layout.html" %}
 {% set active_page = 'admin_playsounds' %}
-{% block title %}Playsounds{% endblock %}
+{% block title %}Sonidos{% endblock %}
 {% block body %}
-    <h2>Playsounds</h2>
+    <h2>Sonidos</h2>
 
     <div class="ui icon message inverted">
         <i class="info circle icon"></i>
         <div class="content">
             <div class="header">
-                Playsounds usage help
+                Ayuda para el uso de Sonidos
             </div>
-            <p>The playsound feature allows viewers to play predefined soundbites on stream.</p>
+            <p>La función "sonidos" permite a los espectadores reproducir fragmentos de sonido predefinidos en el directo.</p>
 
             <div class="ui raised segment inverted">
                 <p>
-                    Playing a sound
+                    Reproducir un sonido
                     {% if module_settings.point_cost <= 0 and module_settings.token_cost <= 0 %}
-                        is <b>free</b>.
+                        es <b>gratis</b>.
                     {% elif module_settings.point_cost > 0 and module_settings.token_cost > 0 %}
-                        costs <b>{{ module_settings.point_cost }} point{{ "s" if module_settings.point_cost != 1 }} and
+                        cuesta <b>{{ module_settings.point_cost }} punto{{ "s" if module_settings.point_cost != 1 }} y
                         {{ module_settings.token_cost }} token{{ "s" if module_settings.token_cost != 1 }}</b>.
                     {% elif module_settings.point_cost > 0 %}
-                        costs <b>{{ module_settings.point_cost }} point{{ "s" if module_settings.point_cost != 1 }}</b>.
+                        cuesta <b>{{ module_settings.point_cost }} punto{{ "s" if module_settings.point_cost != 1 }}</b>.
                     {% else %}
-                        costs <b>{{ module_settings.token_cost }} token{{ "s" if module_settings.token_cost != 1 }}</b>.
+                        cuesta <b>{{ module_settings.token_cost }} token{{ "s" if module_settings.token_cost != 1 }}</b>.
                     {% endif %}
 
                     <br>
-                    There is a global cooldown of <b>{{ module_settings.global_cd }}
-                    second{{ "s" if module_settings.global_cd != 1 }}</b>
+                    Hay un cooldown global de <b>{{ module_settings.global_cd }}
+                    segundo{{ "s" if module_settings.global_cd != 1 }}</b>
                     {%- if module_settings.user_cd > 0 %}
-                    and a per-user cooldown of <b>{{ module_settings.user_cd }} second{{ "s" if module_settings.user_cd != 1 }}</b>
+                    y un cooldown por usuario de <b>{{ module_settings.user_cd }} segundo{{ "s" if module_settings.user_cd != 1 }}</b>
                     {%- endif -%}.
                     <br>
-                    If you don't specify an override cooldown in the table below (by leaving the input field empty),
-                    the default cooldown for each sample will be <b>{{ module_settings.default_sample_cd }}
-                    second{{ "s" if module_settings.default_sample_cd != 1 }}</b>.
+                    Si no especifica un cooldown de anulación en la tabla de abajo (dejando el campo de entrada vacío),
+                    el cooldown por defecto para cada muestra será de <b>{{ module_settings.default_sample_cd }}
+                    segundo{{ "s" if module_settings.default_sample_cd != 1 }}</b>.
                 </p>
 
                 <p>
-                    Global Playsounds volume is currently set to <b>{{ module_settings.global_volume }}%</b>.
-                    The global volume is multiplied with the volume you configure for each sample.
+                    El volumen global de los Sonidos está actualmente ajustado a <b>{{ module_settings.global_volume }}%</b>.
+                    El volumen global se multiplica por el volumen que se configura para cada muestra.
                 </p>
 
                 <p>
                     {% if module_settings.sub_only %}
-                        <b>Only subscribers</b> are allowed to play sounds.
+                        <b>Sólo suscriptores</b> pueden reproducir sonidos.
                     {% else %}
-                        Both <b>subscribers and plebs</b> are allowed to play sounds.
+                        Ambos <b>suscriptores y plebs</b> pueden reproducir sonidos.
                     {% endif %}
                 </p>
             </div>
 
             <p>
-                You can reconfigure these settings on the
-                <a href="/admin/modules/edit/playsound">playsound module settings page</a>.
+                Puede reconfigurar estos ajustes en la
+                <a href="/admin/modules/edit/playsound">página de configuración del módulo playsound</a>.
             </p>
 
             <p>
-                Alongside the controls via this web page, you can control playsounds via chat with the commands
+                Además de los controles a través de esta página web, puedes controlar los playsounds a través del chat con los comandos
                 <a href="/commands/add_playsound"><b>!add playsound</b></a>,
-                <a href="/commands/remove_playsound"><b>!remove playsound</b></a> and
+                <a href="/commands/remove_playsound"><b>!remove playsound</b></a> y
                 <a href="/commands/edit_playsound"><b>!edit playsound</b></a>.
-                Follow the links to get usage help.
+                Siga los enlaces para obtener ayuda de uso.
             </p>
         </div>
     </div>
@@ -71,21 +71,21 @@
         <i class="{{ "check circle" if playsounds_enabled else "exclamation triangle" }} icon"></i>
         <div class="content">
             <div class="header">
-                Playsounds are currently
-                <b>{{ "enabled" if playsounds_enabled else "disabled" }}</b>.
+                Los sonidos están actualmente
+                <b>{{ "enabled" if playsounds_enabled else "deshabilitados" }}</b>.
             </div>
             <p>
                 {% if  playsounds_enabled %}
-                    You are good to go! Your viewers can play the sounds listed below.
+                    Ya está listo para funcionar. Tus espectadores pueden reproducir los sonidos que se indican a continuación.
                 {% else %}
-                    Your viewers can currently not play any sounds.
+                    Actualmente sus espectadores no pueden reproducir ningún sonido.
                 {% endif %}
             </p>
-            <p>Use the slider below to enable or disable the module:
+            <p>Utilice el control deslizante de abajo para activar o desactivar el módulo:
             <div class="ui toggle checkbox">
                 <input id="toggle-module-checkbox" type="checkbox" autocomplete="off" {% if playsounds_enabled %}
                        checked {% endif %}>
-                <label><p>Enable Playsound module</p></label>
+                <label><p>Habilitar el módulo de Sonidos</p></label>
             </div>
             </p>
         </div>
@@ -99,27 +99,27 @@
         <div>
             <form class="ui action input" id="new-playsound-form">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token()  }}"/>
-                <input autocomplete="off" type="text" name="name" placeholder="New playsound name" style="width: 300px;"
+                <input autocomplete="off" type="text" name="name" placeholder="Nuevo nombre del Sonido" style="width: 300px;"
                        required>
                 <input autocomplete="off" type="url" name="link" class="link-input middle-input"
-                       placeholder="New playsound link"
+                       placeholder="Nuevo enlace del Sonido"
                        style="width: 300px;" required>
-                <button class="ui button positive inverted" id="#create-playsound-button" type="submit">Create Playsound</button>
+                <button class="ui button positive inverted" id="#create-playsound-button" type="submit">Crear Sonido</button>
             </form>
         </div>
     </div>
     <table class="ui single line very basic table inverted">
         <thead>
         <tr>
-            <th class="collapsing">Name</th>
+            <th class="collapsing">Nombre</th>
             <th>Link</th>
-            <th class="collapsing">Volume</th>
+            <th class="collapsing">Volumen</th>
             <th class="collapsing">
                 Cooldown<br>
-                (seconds)
+                (Segundos)
             </th>
-            <th class="collapsing">Enabled</th>
-            <th class="collapsing" style="min-width: 120px">Actions</th>
+            <th class="collapsing">Habilitado</th>
+            <th class="collapsing" style="min-width: 120px">Acciones</th>
         </tr>
         </thead>
         <tbody>
@@ -133,7 +133,7 @@
                         <div class="grow ui input compact">
                             <input autocomplete="off" form="form-{{ playsound.name }}" class="link-input" type="url"
                                    required
-                                   placeholder="Audio file link" name="link" value="{{ playsound.link }}">
+                                   placeholder="Enlace al archivo de audio" name="link" value="{{ playsound.link }}">
                         </div>
                         <div class="play-buttons">
                             <div class="play-in-browser-wrapper"
@@ -142,13 +142,13 @@
                                  data-volume="{{ playsound.volume }}">
                                 <button class="positive inverted play-in-browser-play ui icon button compact">
                                     <i class="play circle outline icon"></i>
-                                    Test in browser
+                                    Pruébalo
                                 </button>
                                 <button class="play-in-browser-stop ui button compact icon disabled inverted">
-                                    <i class="stop circle outline icon"></i>Stop Playback
+                                    <i class="stop circle outline icon"></i>Detener
                                 </button>
                                 <button class="play-on-stream ui button icon compact inverted">
-                                    <i class="play circle outline icon"></i>Test on stream
+                                    <i class="play circle outline icon"></i>Probar en Stream
                                 </button>
                             </div>
                         </div>
@@ -180,10 +180,10 @@
                 <td>
                     <div class="actions-buttons-container">
                         <button form="form-{{ playsound.name }}"
-                                class="playsound-submit-save ui compact positive inverted button" type="submit">Save
+                                class="playsound-submit-save ui compact positive inverted button" type="submit">Guardar
                         </button>
                         <button form="form-{{ playsound.name }}"
-                                class="playsound-submit-delete ui compact negative inverted button" type="button">Delete
+                                class="playsound-submit-delete ui compact negative inverted button" type="button">Eliminar
                         </button>
                     </div>
                 </td>
@@ -194,18 +194,18 @@
 
     <div class="ui tiny test modal" id="delete-modal">
         <div class="header">
-            <p>Delete Playsound</p>
+            <p>Eliminar Sonido</p>
         </div>
         <div class="content">
-            <p>Please confirm you want to delete that playsound. This action is irreversible.</p>
+            <p>Por favor, confirme que desea eliminar el sonido. Esta acción es irreversible.</p>
         </div>
         <div class="actions">
             <div class="ui negative inverted right labeled icon button">
-                No, Don't delete
+                No, no eliminar
                 <i class="close icon"></i>
             </div>
             <div class="ui positive inverted right labeled icon button">
-                Yes, delete
+                Sí, elimínalo
                 <i class="checkmark icon"></i>
             </div>
         </div>

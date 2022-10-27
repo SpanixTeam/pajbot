@@ -1,13 +1,13 @@
 {% extends "admin/layout.html" %}
 {% set active_page = 'admin_timers' %}
-{% block title %}Create Timer{% endblock %}
+{% block title %}Crear Timer{% endblock %}
 {% block body %}
 {% if timer %}
-<h2>Edit Timer &quot;{{ timer.name }}&quot;</h2>
+<h2>Editar Timer &quot;{{ timer.name }}&quot;</h2>
 {% else %}
-<h2>Create Timer</h2>
+<h2>Crear Timer</h2>
 {% endif %}
-<p>An interval set to 0 means it will not be run.</p>
+<p>Un intervalo fijado en 0 significa que no se ejecutará.</p>
 <form class="ui form inverted" method="POST" action="/admin/timers/create">
     <input type="hidden" name="csrf_token" value="{{ csrf_token()  }}"/>
     {% if timer %}
@@ -15,38 +15,38 @@
     {% endif %}
     <div class="fields">
         <div class="required field eight wide">
-            <label>Name</label>
-            <input type="text" name="name" placeholder="Name to describe Timer" value="{{ timer.name if timer else ''}}" />
+            <label>Nombre</label>
+            <input type="text" name="name" placeholder="Nombre para describir al Temporizador" value="{{ timer.name if timer else ''}}" />
         </div>
         <div class="required field four wide">
-            <label>Interval online (minutes)</label>
-            <input type="number" name="interval_online" placeholder="Interval in minutes" min="0" value="{{ timer.interval_online if timer else 10 }}" />
+            <label>Intervalo Online (Minutos)</label>
+            <input type="number" name="interval_online" placeholder="Intervalo en Minutos" min="0" value="{{ timer.interval_online if timer else 10 }}" />
         </div>
         <div class="required field four wide">
-            <label>Interval offline (minutes)</label>
-            <input type="number" name="interval_offline" placeholder="Interval in minutes" min="0" value="{{ timer.interval_offline if timer else 30 }}" />
+            <label>Intervalo Offline (Minutos)</label>
+            <input type="number" name="interval_offline" placeholder="Intervalo en Minutos" min="0" value="{{ timer.interval_offline if timer else 30 }}" />
         </div>
     </div>
     <div class="fields">
         <div class="required field four wide">
-            <label>Message type</label>
+            <label>Tipo de Mensaje</label>
             <select class="ui dropdown" name="message_type">
-                <option value="say" {{ 'selected' if timer and timer.action.subtype == 'say' else '' }}>Say</option>
+                <option value="say" {{ 'selected' if timer and timer.action.subtype == 'say' else '' }}>Decir</option>
                 <option value="me" {{ 'selected' if timer and timer.action.subtype == 'me' else '' }}>Me</option>
-                <option value="announce" {{ 'selected' if timer and timer.action.subtype == 'announce' else '' }}>Announce</option>
+                <option value="announce" {{ 'selected' if timer and timer.action.subtype == 'announce' else '' }}>Anuncio</option>
             </select>
         </div>
         <div class="required field twelve wide">
-            <label>Message</label>
-            <input type="text" name="message" placeholder="Message" value="{{ timer.action.response if timer else ''}}"/>
+            <label>Mensaje</label>
+            <input type="text" name="message" placeholder="Mensaje" value="{{ timer.action.response if timer else ''}}"/>
         </div>
     </div>
     <div class="ui message warning" style="padding: 0.4em;"></div>
     <div class="ui message error" style="padding: 0.4em;"></div>
     {% if timer %}
-    <div class="ui submit button green inverted">Save</div>
+    <div class="ui submit button green inverted">Guardar</div>
     {% else %}
-    <div class="ui submit button green inverted">Create</div>
+    <div class="ui submit button green inverted">Crear</div>
     {% endif %}
 </div>
 </form>

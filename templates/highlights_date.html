@@ -4,7 +4,7 @@
 {% block body %}
 <h2>Highlights on {{ date|strftime('%Y-%m-%d') }}</h2>
 {% if highlights|length == 0 %}
-<p>No highlights were found on this date</p>
+<p>No se ha encontrado ningún highlight en esta fecha</p>
 {% else %}
 <p><a href="#calendar"><i class="icon linkify"></i> Browse Calendar</a></p>
 <div class="ui divided items">
@@ -12,7 +12,7 @@
 {% include 'highlight/list.html' %}
 {% endfor %}
 </div>
-<h3>Find more highlights here</h3>
+<h3>Encuentra más highlights aquí</h3>
 {% endif %}
 <div id="calendar"></div>
 {% endblock %}
