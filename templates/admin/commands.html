@@ -1,39 +1,39 @@
 {% extends "admin/layout.html" %}
 {% set active_page = 'admin_commands' %}
-{% block title %}Admin - Commands{% endblock %}
+{% block title %}Admin - Comandos{% endblock %}
 {% block body %}
 {% if created %}
 <div class="ui success message">
     <i class="close icon"></i>
-    <div class="header">Your Command was created successfully.</div>
+    <div class="header">Su Comando fue creado con éxito.</div>
 </div>
 {% elif edited %}
 <div class="ui success message">
     <i class="close icon"></i>
-    <div class="header">Your Command was edited successfully.</div>
+    <div class="header">Su Comando fue editado con éxito.</div>
 </div>
 {% endif %}
-<button class="ui button create-command green inverted"><i class="icon add"></i> Create Command</button>
-<h2>Commands</h2>
-<p>This is a list of all commands that you can edit.</p>
+<button class="ui button create-command green inverted"><i class="icon add"></i> Crear Comando</button>
+<h2>Comandos</h2>
+<p>Esta es una lista de todos los comandos que puedes editar.</p>
 <div id="commands">
 <div class="ui top attached tabular menu">
-    <a class="item custom active" data-tab="custom">Regular Commands</a>
+    <a class="item custom active" data-tab="custom">Comandos de Regulares</a>
     {% if point_commands|length > 0 %}
-        <a class="item point" data-tab="point">Point Commands</a>
+        <a class="item point" data-tab="point">Comandos de Puntos</a>
     {% endif %}
     {% if moderator_commands|length > 0 %}
-        <a class="item moderator" data-tab="moderator">Moderator Commands</a>
+        <a class="item moderator" data-tab="moderator">Comandos de Moderadores</a>
     {% endif %}
 </div>
 <div class="ui bottom attached tab segment active" data-tab="custom">
     <table class="ui selectable basic table inverted">
         <thead>
             <tr>
-                <th>Command</th>
-                <th>Description</th>
-                <th>#&nbsp;uses</th>
-                <th>Actions</th>
+                <th>Comando</th>
+                <th>Descripción</th>
+                <th>#&nbsp;Usos</th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -46,7 +46,7 @@
         </tr>
         <tr data-id="{{command.id}}">
             <td class="collapsing"></td>
-            <td colspan="3">{% if command.data.last_date_used != None and command.data.last_date_used != '' %}Last time used <strong>{{ command.data.last_date_used|time_ago }}</strong> ago.{% else %}No Data.{% endif %} {% include 'admin/helper/command_user.html' %}</td>
+            <td colspan="3">{% if command.data.last_date_used != None and command.data.last_date_used != '' %}Último uso hace <strong>{{ command.data.last_date_used|time_ago }}</strong>.{% else %}Sin Datos.{% endif %} {% include 'admin/helper/command_user.html' %}</td>
         </tr>
         {% endfor %}
         </tbody>
@@ -56,11 +56,11 @@
     <table class="ui selectable basic table inverted">
         <thead>
             <tr>
-                <th>Command</th>
-                <th>Cost</th>
-                <th>Description</th>
-                <th>#&nbsp;uses</th>
-                <th>Actions</th>
+                <th>Comando</th>
+                <th>Costo</th>
+                <th>Descripción</th>
+                <th>#&nbsp;Usos</th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -75,7 +75,7 @@
         <tr data-id="{{command.id}}">
             <td class="collapsing"></td>
             <td class="collapsing"></td>
-            <td colspan="3">{% if command.data.last_date_used != None %}Last time used <strong>{{ command.data.last_date_used|time_ago }}</strong> ago.{% else %}No Data.{% endif %} {% include 'admin/helper/command_user.html' %}</td>
+            <td colspan="3">{% if command.data.last_date_used != None %}Último uso hace <strong>{{ command.data.last_date_used|time_ago }}</strong>.{% else %}Sin Datos.{% endif %} {% include 'admin/helper/command_user.html' %}</td>
             </tr>
         {% endfor %}
         </tbody>
@@ -85,10 +85,10 @@
     <table class="ui selectable basic table inverted">
         <thead>
             <tr>
-                <th>Command</th>
-                <th>Description</th>
-                <th>#&nbsp;uses</th>
-                <th>Actions</th>
+                <th>Comando</th>
+                <th>Descripción</th>
+                <th>#&nbsp;Usos</th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -101,7 +101,7 @@
         </tr>
         <tr data-id="{{command.id}}">
             <td class="collapsing"></td>
-            <td colspan="3">{% if command.data.last_date_used != None %}Last time used <strong>{{ command.data.last_date_used|time_ago }}</strong> ago.{% else %}No Data.{% endif %} {% include 'admin/helper/command_user.html' %}</td>
+            <td colspan="3">{% if command.data.last_date_used != None %}Último uso hace <strong>{{ command.data.last_date_used|time_ago }}</strong>.{% else %}Sin Datos.{% endif %} {% include 'admin/helper/command_user.html' %}</td>
         </tr>
         {% endfor %}
         </tbody>
@@ -110,15 +110,15 @@
 </div>
 <div class="ui modal remove-command">
     <i class="close icon"></i>
-    <div class="header"><p>Confirm Action</p></div>
+    <div class="header"><p>Confirmar Acción</p></div>
     <div class="content">
         <div class="description">
-            <p>Are you sure you want to remove this command? This action is irreversible.</p>
+            <p>¿Está seguro de que quiere eliminar este comando? Esta acción es irreversible.</p>
         </div>
     </div>
     <div class="actions">
-        <div class="ui approve inverted button">Remove</div>
-        <div class="ui cancel inverted button">Cancel</div>
+        <div class="ui approve inverted button">Remover</div>
+        <div class="ui cancel inverted button">Cancelar</div>
     </div>
 </div>
 {% endblock %}

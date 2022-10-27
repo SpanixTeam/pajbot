@@ -3,12 +3,12 @@
 {% block title %}Contact{% endblock %}
 {% block body %}
 <div class="ui segment inverted" style="background: none;">
-<h2>Contact</h2>
+<h2>Contacto</h2>
 {% if maintainer is not none %}
-<p>Hi, I'm {{ maintainer.name }}! I'm the host and maintainer of {{ bot.name }}.</p>
+<p>Hola, ¡soy {{ maintainer.name }}! Soy el hoster y mantenedor de {{ bot.name }}.</p>
 <p>{{ maintainer.contact_string|safe }}</p>
 {% endif %}
-<p>{{ bot.name }} is running on the <a href="https://github.com/pajbot/pajbot"><strong>pajbot</strong></a> source, which is written in Python.</p>
-<p>Got any questions or comments about the bot or the website? <a href="https://discord.gg/qbRE8WR">You can join pajlada's Discord for support!</a></p>
+<p>{{ bot.name }} se ejecuta con el código fuente de <a href="https://github.com/SpanixTeam/pajbot"><strong>pajbot</strong></a>, el cuál está escrito en Python.</p>
+<p>¿Tienes alguna pregunta o comentario sobre el bot o el sitio web? <a href="https://discord.gg/qbRE8WR">¡Puedes unirte al Discord de pajlada para recibir soporte!</a></p>
 </div>
 {% endblock %}

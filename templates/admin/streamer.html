@@ -1,13 +1,13 @@
 {% extends "admin/layout.html" %}
 {% set active_page = 'admin_streamer' %}
-{% block title %}Admin - Streamer Info{% endblock %}
+{% block title %}Admin - Info del Streamer{% endblock %}
 {% block body %}
-<h2>Streamer Info</h2>
-<p>Use the links in the menu to browse admin-only sites.</p>
+<h2>Info del Streamer</h2>
+<p>Utilice los enlaces del menú para navegar por los sitios exclusivos para administradores.</p>
 <table class="social ui single line very basic table collapsing inverted">
     <thead>
         <tr>
-            <th></th><th></th><th>Preview</th>
+            <th></th><th></th><th>Previsualización</th>
         </tr>
     </thead>
     <tbody>
@@ -16,7 +16,7 @@
     <td><i class="icon {{ social }}"></i> {{ streamer_info[social].title }}</td>
     <td>
         <div class="ui input">
-            <input class="social" type="text" placeholder="{{ streamer_info[social].title }} name/link..." value="{{ streamer_info[social].value if streamer_info[social].value else '' }}"/>
+            <input class="social" type="text" placeholder="{{ streamer_info[social].title }} nombre/link..." value="{{ streamer_info[social].value if streamer_info[social].value else '' }}"/>
         </div>
     </td>
     <td><span class="full-value">X</span></td>
@@ -25,7 +25,7 @@
     </tbody>
 </table>
 <p>
-<button class="ui button green" onclick="save_social();">Save</button>
+<button class="ui button green" onclick="save_social();">Guardar</button>
 </p>
 {% endblock %}
 {% block footer %}

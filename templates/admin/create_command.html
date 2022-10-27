@@ -1,14 +1,14 @@
 {% extends "admin/layout.html" %}
 {% set active_page = 'admin_commands' %}
-{% block title %}Create Command{% endblock %}
+{% block title %}Crear Comando{% endblock %}
 {% block body %}
-<h2>Create Command</h2>
+<h2>Crear Comando</h2>
 <form class="ui form inverted" method="POST">
     <input type="hidden" name="csrf_token" value="{{ csrf_token()  }}"/>
     <div class="fields">
         <div class="required field field-alias four wide">
             <label>Aliases</label>
-            <input class="alias" type="text" placeholder="New alias..." />
+            <input class="alias" type="text" placeholder="Nuevo alias..." />
             <div class="alias-button-bar">
                 <div class="aliases"></div>
             </div>
@@ -17,59 +17,59 @@
     </div>
     <div class="fields">
         <div class="required field four wide">
-            <label>Level</label>
-            <input type="number" name="level" placeholder="Level" value="100" />
+            <label>Nivel</label>
+            <input type="number" name="level" placeholder="Nivel" value="100" />
         </div>
         <div class="required field four wide">
-            <label>Global cooldown (seconds)</label>
+            <label>Cooldown Global (Segundos)</label>
             <input type="number" name="cd" placeholder="Cooldown" value="5" />
         </div>
         <div class="required field four wide">
-            <label>Per-user cooldown (seconds)</label>
+            <label>Cooldown Por-usuario (Segundos)</label>
             <input type="number" name="usercd" placeholder="Cooldown" value="15" />
         </div>
         <div class="required field four wide">
-            <label>Point cost</label>
-            <input type="number" name="cost" placeholder="Cost" value="0" />
+            <label>Costo de Puntos</label>
+            <input type="number" name="cost" placeholder="Costo" value="0" />
         </div>
     </div>
     <div class="fields">
         <div class="required field four wide">
-            <label>Reply type</label>
+            <label>Tipo de Respuesta</label>
             <select class="ui dropdown" name="reply">
-                <option value="say">Say</option>
+                <option value="say">Decir</option>
                 <option value="me">Me</option>
-                <option value="announce">Announce</option>
-                <option value="whisper">Whisper</option>
-                <option value="reply">Context-dependant reply</option>
+                <option value="announce">Anuncio</option>
+                <option value="whisper">Susurro</option>
+                <option value="reply">Respuesta dependiente del contexto</option>
             </select>
         </div>
         <div class="required field twelve wide">
-            <label>Response</label>
+            <label>Respuesta</label>
             <input type="text" name="response" placeholder="Response" />
         </div>
     </div>
     <div class="fields">
         <div class="field inline ui checkbox four wide">
                 <input type="checkbox" name="whisperable" />
-                <label>Whisperable</label>
+                <label>Susurrable</label>
         </div>
         <div class="field inline ui checkbox four wide">
                 <input type="checkbox" name="subonly" />
-                <label>Sub Only</label>
+                <label>Sólo Subs</label>
         </div>
         <div class="field inline ui checkbox four wide">
                 <input type="checkbox" name="modonly" />
-                <label>Mod Only</label>
+                <label>Sólo Mod</label>
         </div>
         <div class="field inline ui checkbox four wide">
                 <input type="checkbox" name="checkmsg" />
-                <label>Check Message</label>
+                <label>Comprobar Mensaje</label>
         </div>
     </div>
     <div class="ui message warning" style="padding: 0.4em;"></div>
     <div class="ui message error" style="padding: 0.4em;"></div>
-    <div class="ui submit button green inverted">Create</div>
+    <div class="ui submit button green inverted">Crear</div>
 </div>
 </form>
 {% endblock %}

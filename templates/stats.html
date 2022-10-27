@@ -1,19 +1,19 @@
 {% extends "layout.html" %}
 {% set active_page = 'stats' %}
-{% block title %}Stats{% endblock %}
+{% block title %}Estadísticas{% endblock %}
 {% block body %}
-<h2>Stats</h2>
+<h2>Estadísticas</h2>
 {% if 'duel' in enabled_modules %}
-<p><a href="/stats/duels/"><i class="icon linkify"></i>  Duel stats</a></p>
+<p><a href="/stats/duels/"><i class="icon linkify"></i>  Estadísticas de Duelos</a></p>
 {% endif %}
-<h3><a href="https://stats.streamelements.com/c/{{ streamer.full_name }}">StreamElements stats page</a></h3>
+<h3><a href="https://stats.streamelements.com/c/{{ streamer.full_name }}">Estadísticas de StreamElements</a></h3>
 <div id="stats">
-    <h3>Top 5 Commands</h3>
+    <h3>Top 5 Comandos</h3>
     <table class="ui very basic table inverted">
         <thead>
             <tr>
-                <th>Command</th>
-                <th># Uses</th>
+                <th>Comando</th>
+                <th># Usos</th>
             </tr>
         </thead>
         <tbody>
@@ -25,12 +25,12 @@
             {% endfor %}
     </table>
     {% if 'linefarming' in enabled_modules %}
-        <h3>Top 5 Line Farmers</h3>
+        <h3>Top 5 Mensajes</h3>
         <table class="ui very basic table inverted">
             <thead>
                 <tr>
                     <th>Username</th>
-                    <th>Lines</th>
+                    <th>Mensajes</th>
                 </tr>
             </thead>
             <tbody>
@@ -42,13 +42,13 @@
                 {% endfor %}
         </table>
     {% endif %}
-    
+
     <h3>Top 100 Emotes</h3>
     <table class="ui very basic table inverted">
         <thead>
             <tr>
                 <th>Emote</th>
-                <th># Uses</th>
+                <th># Usos</th>
             </tr>
         </thead>
         <tbody>

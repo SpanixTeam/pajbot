@@ -1,8 +1,8 @@
 {% extends "admin/layout.html" %}
 {% set active_page = 'admin_moderators' %}
-{% block title %}Moderators{% endblock %}
+{% block title %}Moderadores{% endblock %}
 {% block body %}
-<h2>Bot Moderators</h2>
+<h2>Moderadores del Bot</h2>
 <div id="bot_moderators">
     <table class="ui very basic table collapsing inverted">
 {% for title, users in userlists.items() %}
@@ -10,8 +10,8 @@
         <thead>
             <tr><th colspan="2"><h4>{{title}}</h4></th></tr>
             <tr>
-                <th>Username</th>
-                <th>Level</th>
+                <th>Usuario</th>
+                <th>Nivel</th>
             </tr>
         </thead>
         <tbody>

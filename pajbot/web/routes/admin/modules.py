@@ -40,7 +40,7 @@ def init(page) -> None:
         if user.level < current_module.CONFIGURE_LEVEL:
             return (
                 render_template(
-                    "errors/403.html", extra_message="You do not have permission to configure this module."
+                    "errors/403.html", extra_message="No tienes permiso para configurar este módulo."
                 ),
                 403,
             )

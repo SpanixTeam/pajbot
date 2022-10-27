@@ -1,16 +1,16 @@
 {% extends "layout.html" %}
 {% set active_page = 'commands' %}
-{% block title %}Commands{% endblock %}
+{% block title %}Comandos{% endblock %}
 {% block body %}
-<h2>Commands</h2>
+<h2>Comandos</h2>
 <div id="commands">
 <div class="ui top attached tabular menu collapsing collapsed">
-    <a class="item custom active" data-tab="custom">Regular Commands</a>
+    <a class="item custom active" data-tab="custom">Comandos de Regulares</a>
     {% if point_commands|length > 0 %}
-        <a class="item point" data-tab="point">Point Commands</a>
+        <a class="item point" data-tab="point">Comandos de Puntos</a>
     {% endif %}
     {% if moderator_commands|length > 0 %}
-        <a class="item moderator" data-tab="moderator">Moderator Commands</a>
+        <a class="item moderator" data-tab="moderator">Comandos de Moderador</a>
     {% endif %}
 </div>
 <div class="ui bottom attached tab segment active collapsed" data-tab="custom">
@@ -21,7 +21,7 @@
             <table class="ui basic table collapsed collapsing commandlist inverted {{ base_key }}" data-key="{{ base_key }}">
                 <thead>
                     <tr>
-                        <th>Command trigger</th>
+                        <th>Comando</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -45,7 +45,7 @@
             <table class="ui basic table collapsed collapsing commandlist inverted {{ base_key }}" data-key="{{ base_key }}">
                 <thead>
                     <tr>
-                        <th>Command trigger</th>
+                        <th>Comando</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -69,7 +69,7 @@
             <table class="ui basic table collapsed collapsing commandlist inverted {{ base_key }}" data-key="{{ base_key }}">
                 <thead>
                     <tr>
-                        <th>Command trigger</th>
+                        <th>Comando</th>
                     </tr>
                 </thead>
                 <tbody>

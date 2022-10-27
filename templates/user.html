@@ -1,14 +1,14 @@
 {% extends "layout.html" %}
 {% set active_page = 'user' %}
-{% block title %}Profile - {{ user.name_verbose }}{% endblock %}
+{% block title %}Perfil - {{ user.name_verbose }}{% endblock %}
 {% block body %}
 <div id="userprofile">
-    <h2>User Profile - {{ user }}</h2>
+    <h2>Perfil de Usuario - {{ user }}</h2>
     <div class="mediumtable">
         <table class="ui very basic table celled inverted">
             <tbody>
                 <tr>
-                    <td><strong>Username</strong></td>
+                    <td><strong>Usuario</strong></td>
                     <td>{% include 'user/username_link.html' %}</td>
                 </tr>
                 <tr>
@@ -16,16 +16,16 @@
                     <td>{{ user.id }}</td>
                 </tr>
                 <tr>
-                    <td><strong>Level</strong></td>
+                    <td><strong>Nivel</strong></td>
                     <td>
                         {% if user.level < 250 %}
-                        User
+                        Usuario
                         {% elif user.level < 500 %}
                         Dank Helper
                         {% elif user.level < 1000 %}
-                        Moderator
+                        Moderador
                         {% elif user.level < 2000 %}
-                        Super Moderator
+                        Súper Moderador
                         {% else %}
                         Admin
                         {% endif %} ({{ user.level }})
@@ -37,38 +37,38 @@
                     </td>
                 </tr>
                 <tr>
-                    <td><strong>Points</strong></td>
-                    <td>{{ user.points }}</td>
+                    <td><strong>Puntos</strong></td>
+                    <td>{{ user.points }} (Rango {{ user.points_rank }})</td>
                 </tr>
                 <tr>
-                    <td><strong>Messages sent</strong></td>
-                    <td>{{ user.num_lines }}</td>
+                    <td><strong>Mensajes</strong></td>
+                    <td>{{ user.num_lines }} (Rango {{ user.num_lines_rank }})</td>
                 </tr>
                 <tr>
-                    <td><strong>Last seen</strong></td>
+                    <td><strong>Última vez</strong></td>
                     {% if user.last_seen %}
                     <td>{{ user.last_seen|localize }}</td>
                     {% else %}
-                    <td>Never</td>
+                    <td>Nunca</td>
                     {% endif %}
                 </tr>
 
                 <tr>
-                    <td><strong>Last active in chat</strong></td>
+                    <td><strong>Último mensaje</strong></td>
                     {% if user.last_active %}
                     <td>{{ user.last_active|localize }}</td>
                     {% else %}
-                    <td>Never</td>
+                    <td>Nunca</td>
                     {% endif %}
                 </tr>
                 <tr>
-                    <td><strong>Time spent watching the stream</strong></td>
+                    <td><strong>Tiempo viendo el stream</strong></td>
                     <td>{{ user.time_in_chat_online|format_timedelta }}</td>
                 </tr>
                 <tr>
-                    <td><strong>Time spent in offline chat</strong></td>
+                    <td><strong>Tiempo en el chat offline</strong></td>
                     {% if user.time_in_chat_offline > user.time_in_chat_online * 2 %}
-                    <td>{{ user.time_in_chat_offline|format_timedelta }} <img class="emote" src="https://static-cdn.jtvnw.net/emoticons/v2/58765/default/dark/3.0" alt="NotLikeThis"></td>
+                    <td>{{ user.time_in_chat_offline|format_timedelta }} <img class="emote" src="https://cdn.frankerfacez.com/emoticon/410314/2" alt="Okayge"></td>
                     {% else %}
                     <td>{{ user.time_in_chat_offline|format_timedelta }}</td>
                     {% endif %}
@@ -76,30 +76,30 @@
                 <tr>
                     <td><strong>Logs</strong></td>
                     <td><a href="https://www.twitch.tv/popout/{{ streamer.full_name }}/viewercard/{{ user.login }}">Twitch Mod Logs</a><br>
-                        <a href="https://logs.ivr.fi/?channel={{ streamer.full_name }}&username={{ user.login }}">IVR Logs</a>
+                        <a href="https://logs.zzls.xyz/?channel={{ streamer.full_name }}&username={{ user.login }}">IVR Logs</a>
                     </td>
                 </tr>
                 <tr>
-                    <td><strong>Permabanned on {{ bot.name }}</strong></td>
-                    <td>{%if user.banned %}Yes{% else %}No{% endif %}</td>
+                    <td><strong>Permabaneado en {{ bot.name }}</strong></td>
+                    <td>{%if user.banned %}Sí{% else %}No{% endif %}</td>
                 </tr>
             </tbody>
         </table>
 
         {% if user.duel_stats.duels_total > 0 %}
-        <h3>Duel stats</h3>
+        <h3>Estadísticas de Duelo</h3>
         <table class="ui very basic table celled inverted">
             <tbody>
                 <tr>
-                    <td><strong>Duels Total</strong></td>
+                    <td><strong>Duelos Totales</strong></td>
                     <td>{{ user.duel_stats.duels_total }}</td>
                 </tr>
                 <tr>
-                    <td><strong>Duels Won</strong></td>
+                    <td><strong>Duelos Ganados</strong></td>
                     <td>{{ user.duel_stats.duels_won }}</td>
                 </tr>
                 <tr>
-                    <td><strong>Duels Lost</strong></td>
+                    <td><strong>Duelos Perdidos</strong></td>
                     <td>{{ user.duel_stats.duels_lost }}</td>
                 </tr>
                 <tr>
@@ -107,54 +107,54 @@
                     <td>{{ user.duel_stats.winrate|round(2) }}%</td>
                 </tr>
                 <tr>
-                    <td><strong>Profit from duels</strong></td>
+                    <td><strong>Ganancia de los Duelos</strong></td>
                     <td>{{ user.duel_stats.profit }} points</td>
                 </tr>
                 <tr>
-                    <td><strong>Last duel</strong></td>
+                    <td><strong>Último Duelo</strong></td>
                     <td>{{ user.duel_stats.last_duel|localize }}</td>
                 </tr>
                 {% if user.duel_stats.longest_winstreak > 1 %}
                 <tr>
-                    <td><strong>Longest Win Streak</strong></td>
+                    <td><strong>Racha de Victorias más larga</strong></td>
                     <td>{{ user.duel_stats.longest_winstreak }}</td>
                 </tr>
                 {% endif %}
                 {% if user.duel_stats.longest_losestreak > 1 %}
                 <tr>
-                    <td><strong>Longest Lose Streak</strong></td>
+                    <td><strong>Racha de Pérdidas más larga</strong></td>
                     <td>{{ user.duel_stats.longest_losestreak }}</td>
                 </tr>
                 {% endif %}
                 {% if user.duel_stats.current_streak > 1 %}
                 <tr>
-                    <td><strong>Current Win Streak</strong></td>
+                    <td><strong>Racha de Victorias Actual</strong></td>
                     <td>{{ user.duel_stats.current_streak }}</td>
                 </tr>
                 {% elif user.duel_stats.current_streak < -1 %}
                 <tr>
-                    <td><strong>Current Lose Streak</strong></td>
+                    <td><strong>Racha Actual de Pérdidas</strong></td>
                     <td>{{ user.duel_stats.current_streak|abs }}</td>
                 </tr>
                 {% endif %}
             </tbody>
         </table>
         {% endif %}
-        
+
         {% if roulette_stats %}
-        <h3>Roulette stats</h3>
+        <h3>Estadísticas de Ruleta</h3>
         <table class="ui very basic table collapsing inverted">
             <tbody>
                 <tr>
-                    <td><strong>Total points rouletted for</strong></td>
+                    <td><strong>Total de puntos usados</strong></td>
                     <td>{{ roulette_stats.total_points }}</td>
                 </tr>
                 <tr>
-                    <td><strong>Roulettes amount</strong></td>
+                    <td><strong>Ruletas</strong></td>
                     <td>{{ roulette_stats.num_roulettes }}</td>
                 </tr>
                 <tr>
-                    <td><strong>Profit</strong></td>
+                    <td><strong>Ganancia</strong></td>
                     <td><span class="points {{ 'negative' if roulette_stats.profit < 0 else 'positive' }}">{{ roulette_stats.profit }}</span></td>
                 </tr>
                 <tr>
@@ -162,36 +162,36 @@
                     <td><span class="winrate {{ 'positive' if roulette_stats.winrate > roulette_stats.roulette_base_winrate else 'negative' }}">{{ roulette_stats.winrate_str }}</span></td>
                 </tr>
                 <tr>
-                    <td><strong>Biggest winstreak</strong></td>
+                    <td><strong>Mayor Racha de Victorias</strong></td>
                     <td>{{ roulette_stats.biggest_winstreak }}</td>
                 </tr>
                 <tr>
-                    <td><strong>Biggest losestreak</strong></td>
+                    <td><strong>Mayor Racha de Pérdidas</strong></td>
                     <td>{{ roulette_stats.biggest_losestreak }}</td>
                 </tr>
                 {% if roulette_stats.biggest_win != 0 %}
                     <tr>
-                        <td><strong>Biggest win</strong></td>
+                        <td><strong>Mayor Victoria</strong></td>
                         <td><span class="points positive">{{ roulette_stats.biggest_win}}</span></td>
                     </tr>
                 {% endif %}
                 {% if roulette_stats.biggest_loss != 0 %}
                     <tr>
-                        <td><strong>Biggest loss</strong></td>
+                        <td><strong>Mayor Pérdida</strong></td>
                         <td><span class="points negative">{{ roulette_stats.biggest_loss}}</span></td>
                     </tr>
                 {% endif %}
             </tbody>
         </table>
         {% endif %}
-        
+
         {% if roulettes|length > 0 %}
-        <h3>Roulette history</h3>
+        <h3>Historial de Ruleta</h3>
         <table class="ui very basic table collapsing inverted">
             <thead>
                 <tr>
-                    <th>Time</th>
-                    <th>Diff</th>
+                    <th>Fecha</th>
+                    <th>Cantidad</th>
             </thead>
             <tbody>
                 {% for roulette in roulettes %}

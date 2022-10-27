@@ -3,14 +3,14 @@
 {% block title %}Highlights{% endblock %}
 {% block body %}
 <h2>Highlights</h2>
-<p><a href="#calendar"><i class="icon linkify"></i> Browse Calendar</a></p>
+<p><a href="#calendar"><i class="icon linkify"></i> Navegar Calendario</a></p>
 
 <div class="ui divided items">
 {% for highlight in highlights %}
 {% include 'highlight/list.html' %}
 {% endfor %}
 </div>
-<h3>Find more highlights here</h3>
+<h3>Encuentra más highlights aquí</h3>
 <div id="calendar"></div>
 {% endblock %}
 {% block footer %}

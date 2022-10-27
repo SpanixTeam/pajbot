@@ -3,15 +3,15 @@
     <thead>
         <tr>
             <th>Admin</th>
-            <th>Time</th>
-            <th>Action</th>
+            <th>Tiempo</th>
+            <th>Acción</th>
         </tr>
     </thead>
     <tbody>
         {% for log_entry in latest_logs %}
         {% set user = log_entry.user %}
         <tr>
-            <td class="collapsing">{% if user is not none %}{% include 'user/username_link_nobadge.html' %}{% else %}<i>Deleted user</i>{% endif %}</td>
+            <td class="collapsing">{% if user is not none %}{% include 'user/username_link_nobadge.html' %}{% else %}<i>Usuario Eliminado</i>{% endif %}</td>
             <td class="collapsing">{{ log_entry.created_at|localize }}</td>
             <td style="word-break: break-all;">{{ log_entry.message }}</td>
         </tr>

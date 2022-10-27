@@ -1,16 +1,16 @@
 {% extends "admin/layout.html" %}
 {% set active_page = 'admin_modules' %}
-{% block title %}Configure Module{% endblock %}
+{% block title %}Configurar Módulo{% endblock %}
 {% block body %}
 {% if request.method == 'POST' %}
 <div class="ui success message">
     <i class="close icon"></i>
-    <div class="header">Successfully edited the module</div>
+    <div class="header">Se ha editado el módulo con éxito</div>
 </div>
 {% endif %}
-<h2>Configure &quot;{{ module.NAME }}&quot;</h2>
+<h2>Configurar &quot;{{ module.NAME }}&quot;</h2>
 {% if module.PARENT_MODULE is not none %}
-<h3>Parent module: <a href="/admin/modules/edit/{{ module.PARENT_MODULE.ID }}">{{ module.PARENT_MODULE.NAME }}</a></h3>
+<h3>Módulo principal: <a href="/admin/modules/edit/{{ module.PARENT_MODULE.ID }}">{{ module.PARENT_MODULE.NAME }}</a></h3>
 {% endif %}
 <p>{{ module.DESCRIPTION }}</p>
 {% if module.PAGE_DESCRIPTION is not none %}
@@ -18,14 +18,14 @@
 {% endif %}
 <div class="ui divider"></div>
 {% if sub_modules|length > 0 %}
-<h3>Sub-modules</h3>
+<h3>Sub-módulos</h3>
     <table class="ui very basic table collapsing inverted">
         <thead>
             <tr>
-                <th class="collapsing">Module</th>
-                <th>Description</th>
-                <th class="collapsing">Enabled</th>
-                <th class="collapsing">Actions</th>
+                <th class="collapsing">Módulo</th>
+                <th>Descripción</th>
+                <th class="collapsing">Habilitado</th>
+                <th class="collapsing">Acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -42,13 +42,13 @@
                     {% endif %}
                 </td>
                 <td class="right aligned collapsing inverted">
-                <button class="ui compact button inverted edit-row"><i class="icon setting"></i>Configure</button></td>
+                <button class="ui compact button inverted edit-row"><i class="icon setting"></i>Configurar</button></td>
             </tr>
 {% endfor %}
         </tbody>
     </table>
     {% endif %}
-    <h3>Settings</h3>
+    <h3>Ajustes</h3>
 {% if module.SETTINGS|length > 0 %}
 <form class="ui form inverted" method="POST" action="/admin/modules/edit/{{ module.ID }}">
     <input type="hidden" name="csrf_token" value="{{ csrf_token()  }}"/>
@@ -71,17 +71,17 @@
             {% endfor -%}
         </select>
         {% else %}
-        Unknown type: {{ setting.type }}
+        Tipo desconocido: {{ setting.type }}
         {% endif %}
     </div>
     {% endfor -%}
     <div class="ui message warning" style="padding: 0.4em;"></div>
     <div class="ui message error" style="padding: 0.4em;"></div>
-    <div class="ui submit button green inverted"><i class="icon setting"></i>Save</div>
+    <div class="ui submit button green inverted"><i class="icon setting"></i>Guardar</div>
 </div>
 </form>
 {% else %}
-<p>No settings to configure for this module.</p>
+<p>No hay ajustes a configurar para este módulo.</p>
 {% endif %}
 {% endblock %}
 {% block footer %}
