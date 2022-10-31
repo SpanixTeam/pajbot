@@ -24,7 +24,7 @@ class EightBallModule(BaseModule):
         ),
         ModuleSetting(
             key="online_user_cd",
-            label="Cooldown por-usuario (segundos)",
+            label="Cooldown Por-usuario (segundos)",
             type="number",
             required=True,
             placeholder="",

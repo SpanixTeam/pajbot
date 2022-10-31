@@ -14,29 +14,29 @@ log = logging.getLogger("pajbot")
 class FollowAgeModule(BaseModule):
     ID = __name__.split(".")[-1]
     NAME = "Followage"
-    DESCRIPTION = "Enables the usage of the !followage and !followsince commands"
+    DESCRIPTION = "Activa el uso de los comandos !followage y !followsince"
     CATEGORY = "Feature"
     PARENT_MODULE = BasicCommandsModule
     SETTINGS = [
         ModuleSetting(
             key="action_followage",
-            label="MessageAction for !followage",
+            label="MessageAction para !followage",
             type="options",
             required=True,
-            default="say",
+            default="reply",
             options=["say", "whisper", "reply"],
         ),
         ModuleSetting(
             key="action_followsince",
-            label="MessageAction for !followsince",
+            label="MessageAction para !followsince",
             type="options",
             required=True,
-            default="say",
+            default="reply",
             options=["say", "whisper", "reply"],
         ),
         ModuleSetting(
             key="global_cd",
-            label="Global cooldown (seconds)",
+            label="Cooldown Global (Segundos)",
             type="number",
             required=True,
             placeholder="",
@@ -45,7 +45,7 @@ class FollowAgeModule(BaseModule):
         ),
         ModuleSetting(
             key="user_cd",
-            label="Per-user cooldown (seconds)",
+            label="Cooldown Por-Usuario (Segundos)",
             type="number",
             required=True,
             placeholder="",
@@ -59,35 +59,35 @@ class FollowAgeModule(BaseModule):
             self.follow_age,
             delay_all=self.settings["global_cd"],
             delay_user=self.settings["user_cd"],
-            description="Check your or someone elses followage for a channel",
+            description="Comprueba tu tiempo de seguimiento o el de otra persona en este u otro canal",
             can_execute_with_whisper=True,
             examples=[
                 CommandExample(
                     None,
-                    "Check your own followage",
-                    chat="user:!followage\n" "bot:pajlada, you have been following Karl_Kons for 4 months and 24 days",
-                    description="Check how long you have been following the current streamer (Karl_Kons in this case)",
+                    "Comprueba tu propio tiempo de seguimiento",
+                    chat="user:!followage\n" "bot:pajlada, Tú has estado siguiendo a Karl_Kons durante 4 meses y 24 días",
+                    description="Comprueba el tiempo que llevas siguiendo al streamer actual (Karl_Kons en este caso)",
                 ).parse(),
                 CommandExample(
                     None,
-                    "Check someone elses followage",
+                    "Comprobar el tiempo de seguimiento de otro",
                     chat="user:!followage NightNacht\n"
-                    "bot:pajlada, NightNacht has been following Karl_Kons for 5 months and 4 days",
-                    description="Check how long any user has been following the current streamer (Karl_Kons in this case)",
+                    "bot:pajlada, NightNachtha estado siguiendo a Karl_Kons durante 5 meses y 4 días",
+                    description="Comprueba cuánto tiempo lleva cualquier usuario siguiendo al streamer actual (Karl_Kons en este caso)",
                 ).parse(),
                 CommandExample(
                     None,
-                    "Check someones followage for a certain streamer",
+                    "Comprobar el tiempo de seguimiento de un streamer determinado",
                     chat="user:!followage NightNacht forsen\n"
-                    "bot:pajlada, NightNacht has been following forsen for 1 year and 4 months",
-                    description="Check how long NightNacht has been following forsen",
+                    "bot:pajlada, NightNacht ha estado siguiendo a forsen durante 1 año y 4 meses",
+                    description="Comprueba el tiempo que NightNacht lleva siguiendo a forsen",
                 ).parse(),
                 CommandExample(
                     None,
-                    "Check your own followage for a certain streamer",
+                    "Comprueba tu propio tiempo de seguimiento de un determinado streamer",
                     chat="user:!followage pajlada forsen\n"
-                    "bot:pajlada, you have been following forsen for 1 year and 3 months",
-                    description="Check how long you have been following forsen",
+                    "bot:pajlada, Tú has estado siguiendo a forsen durante 1 año y 3 meses",
+                    description="Comprueba el tiempo que llevas siguiendo a forsen",
                 ).parse(),
             ],
         )
@@ -96,36 +96,36 @@ class FollowAgeModule(BaseModule):
             self.follow_since,
             delay_all=self.settings["global_cd"],
             delay_user=self.settings["user_cd"],
-            description="Check from when you or someone else first followed a channel",
+            description="Compruebe desde cuándo usted u otra persona siguió por primera vez un canal",
             can_execute_with_whisper=True,
             examples=[
                 CommandExample(
                     None,
-                    "Check your own follow since",
+                    "Compruebe su propio seguimiento",
                     chat="user:!followsince\n"
-                    "bot:pajlada, you have been following Karl_Kons since 04 March 2015, 07:02:01 UTC",
-                    description="Check when you first followed the current streamer (Karl_Kons in this case)",
+                    "bot:pajlada, Tú has estado siguiendo a Karl_Kons desde el 04 March 2015, 07:02:01 UTC",
+                    description="Comprueba cuándo seguiste por primera vez al streamer actual (Karl_Kons en este caso)",
                 ).parse(),
                 CommandExample(
                     None,
-                    "Check someone elses follow since",
+                    "Comprueba el seguimiento de otros",
                     chat="user:!followsince NightNacht\n"
-                    "bot:pajlada, NightNacht has been following Karl_Kons since 03 July 2014, 04:12:42 UTC",
-                    description="Check when NightNacht first followed the current streamer (Karl_Kons in this case)",
+                    "bot:pajlada, NightNacht ha estado siguiendo a Karl_Kons desde el 03 July 2014, 04:12:42 UTC",
+                    description="Comprueba cuándo NightNacht siguió por primera vez al streamer actual (Karl_Kons en este caso)",
                 ).parse(),
                 CommandExample(
                     None,
-                    "Check someone elses follow since for another streamer",
+                    "Comprueba el seguimiento de alguien más desde a otro streamer",
                     chat="user:!followsince NightNacht forsen\n"
-                    "bot:pajlada, NightNacht has been following forsen since 13 June 2013, 13:10:51 UTC",
-                    description="Check when NightNacht first followed the given streamer (forsen)",
+                    "bot:pajlada, NightNacht ha estado siguiendo a forsen desde el 13 June 2013, 13:10:51 UTC",
+                    description="Comprueba cuándo NightNacht siguió por primera vez al streamer dado (forsen)",
                 ).parse(),
                 CommandExample(
                     None,
-                    "Check your follow since for another streamer",
+                    "Comprueba tu seguimiento a otro streamer",
                     chat="user:!followsince pajlada forsen\n"
-                    "bot:pajlada, you have been following forsen since 16 December 1990, 03:06:51 UTC",
-                    description="Check when you first followed the given streamer (forsen)",
+                    "bot:pajlada, Tú has estado siguiendo a forsen desde el 16 December 1990, 03:06:51 UTC",
+                    description="Comprueba cuándo has seguido por primera vez el streamer dado (forsen)",
                 ).parse(),
             ],
         )
@@ -133,12 +133,12 @@ class FollowAgeModule(BaseModule):
     @staticmethod
     def _format_for_follow_age(follow_since):
         human_age = time_since(utils.now().timestamp() - follow_since.timestamp(), 0)
-        return f"for {human_age}"
+        return f"durante {human_age}"
 
     @staticmethod
     def _format_for_follow_since(follow_since):
-        human_age = follow_since.strftime("%d %B %Y, %X %Z")
-        return f"since {human_age}"
+        human_age = follow_since.strftime("%d-%m-%Y, %X %Z")
+        return f"desde el {human_age}"
 
     @staticmethod
     def _parse_message(message):
@@ -164,7 +164,7 @@ class FollowAgeModule(BaseModule):
                     bot.execute_now(
                         bot.send_message_to_user,
                         source,
-                        f'User "{from_input}" could not be found',
+                        f'El usuario "{from_input}" no ha sido encontrado',
                         event,
                         method=self.settings["action_followage"],
                     )
@@ -180,7 +180,7 @@ class FollowAgeModule(BaseModule):
                 bot.execute_now(
                     bot.send_message_to_user,
                     source,
-                    f'User "{to_input}" could not be found',
+                    f'El usuario "{to_input}" no ha sido encontrado',
                     event,
                     method=message_method,
                 )
@@ -191,18 +191,18 @@ class FollowAgeModule(BaseModule):
 
         if follow_since is not None:
             # Following
-            suffix = f"been following {to_user} {format_cb(follow_since)}"
+            suffix = f"estado siguiendo a {to_user} {format_cb(follow_since)}"
             if is_self:
-                message = f"You have {suffix}"
+                message = f"Has {suffix}"
             else:
-                message = f"{from_user.name} has {suffix}"
+                message = f"{from_user.name} ha {suffix}"
         else:
             # Not following
-            suffix = f"not following {to_user}"
+            suffix = f"a {to_user}"
             if is_self:
-                message = f"You are {suffix}"
+                message = f"No sigues {suffix}"
             else:
-                message = f"{from_user.name} is {suffix}"
+                message = f"{from_user.name} no sigue {suffix}"
 
         bot.execute_now(bot.send_message_to_user, source, message, event, method=message_method)
 
