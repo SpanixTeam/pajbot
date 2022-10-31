@@ -86,7 +86,7 @@ class FollowAgeModule(BaseModule):
                     None,
                     "Comprueba tu propio tiempo de seguimiento de un determinado streamer",
                     chat="user:!followage pajlada forsen\n"
-                    "bot:pajlada, Tú has estado siguiendo a forsen durante 1 año y 3 meses",
+                    "bot:pajlada, Has estado siguiendo a forsen durante 1 año y 3 meses",
                     description="Comprueba el tiempo que llevas siguiendo a forsen",
                 ).parse(),
             ],
@@ -103,7 +103,7 @@ class FollowAgeModule(BaseModule):
                     None,
                     "Compruebe su propio seguimiento",
                     chat="user:!followsince\n"
-                    "bot:pajlada, Tú has estado siguiendo a Karl_Kons desde el 04 March 2015, 07:02:01 UTC",
+                    "bot:pajlada, Has estado siguiendo a Karl_Kons desde el 04 March 2015, 07:02:01 UTC",
                     description="Comprueba cuándo seguiste por primera vez al streamer actual (Karl_Kons en este caso)",
                 ).parse(),
                 CommandExample(
@@ -124,7 +124,7 @@ class FollowAgeModule(BaseModule):
                     None,
                     "Comprueba tu seguimiento a otro streamer",
                     chat="user:!followsince pajlada forsen\n"
-                    "bot:pajlada, Tú has estado siguiendo a forsen desde el 16 December 1990, 03:06:51 UTC",
+                    "bot:pajlada, Has estado siguiendo a forsen desde el 16 December 1990, 03:06:51 UTC",
                     description="Comprueba cuándo has seguido por primera vez el streamer dado (forsen)",
                 ).parse(),
             ],
