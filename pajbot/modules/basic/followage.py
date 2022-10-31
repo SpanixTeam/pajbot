@@ -65,7 +65,7 @@ class FollowAgeModule(BaseModule):
                 CommandExample(
                     None,
                     "Comprueba tu propio tiempo de seguimiento",
-                    chat="user:!followage\n" "bot:pajlada, Tú has estado siguiendo a Karl_Kons durante 4 meses y 24 días",
+                    chat="user:!followage\n" "bot:pajlada, Has estado siguiendo a Karl_Kons durante 4 meses y 24 días",
                     description="Comprueba el tiempo que llevas siguiendo al streamer actual (Karl_Kons en este caso)",
                 ).parse(),
                 CommandExample(
