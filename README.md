@@ -9,6 +9,13 @@ Arreglar errores, actualizar dependencias y asegurar que el código que interact
 Las peticiones de características no serán aceptadas a menos que alguien esté dispuesto a poseer la característica, e incluso entonces algunas características que cambian demasiado la arquitectura no serán permitidas.
 La versión mínima de Python actualmente soportada es **3.9**.
 
+## Versionado de Python
+
+Utilizamos [pyenv](https://github.com/pyenv/pyenv) para gestionar las versiones de Python. Familiarízate con esta herramienta.  
+Instalación rápida de pyenv en sistemas Linux: `curl https://pyenv.run | bash`
+
+Si no quieres usar la versión de Python de pyenv en ninguno de nuestros scripts, establece la variable de entorno `SKIP_PYENV` a `1`.
+
 ## Instalación rápida
 
 1. Instalar los requisitos de la biblioteca escribiendo `./scripts/venvinstall.sh` en el directorio raíz

@@ -49,17 +49,17 @@ También necesitamos las siguientes bibliotecas y herramientas de compilación:
 sudo apt install libssl-dev libpq-dev build-essential git
 ```
 
-Now, double-check that you have Python 3.9 or newer installed:
+Ahora, comprueba que tienes Python 3.9 o más reciente instalado:
 
 ```bash
 python3 --version
 ```
 
-If your system Python version is not 3.9 or above, you must install [pyenv](https://github.com/pyenv/pyenv) following the instructions below.
+Si la versión de Python de su sistema no es 3.9 o superior, debe instalar [pyenv](https://github.com/pyenv/pyenv) siguiendo las instrucciones que se indican a continuación.
 
-### Installing pyenv
+### Instalación de pyenv
 
-Install the required dependencies to build Python (instructions from [here](https://github.com/pyenv/pyenv/wiki#suggested-build-environment))
+Instale las dependencias necesarias para compilar Python (instrucciones de [aquí](https://github.com/pyenv/pyenv/wiki#suggested-build-environment))
 
 ```bash
 sudo apt update
@@ -68,13 +68,13 @@ libbz2-dev libreadline-dev libsqlite3-dev curl \
 libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
 ```
 
-Install pyenv on your system (instructions from [here](https://github.com/pyenv/pyenv#automatic-installer), there are other alternative methods of installations avilable if you want)
+Instala pyenv en tu sistema (instrucciones desde [aquí](https://github.com/pyenv/pyenv#automatic-installer), hay otros métodos alternativos de instalación disponibles si lo deseas)
 
 ```bash
 curl https://pyenv.run | bash
 ```
 
-Set up your bash shell environment for Pyenv (instructions from [here](https://github.com/pyenv/pyenv#set-up-your-shell-environment-for-pyenv))
+Configure su entorno de shell bash para Pyenv (instrucciones de [aquí](https://github.com/pyenv/pyenv#set-up-your-shell-environment-for-pyenv))
 
 ```bash
 echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bashrc
@@ -82,42 +82,7 @@ echo 'command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.
 echo 'eval "$(pyenv init -)"' >> ~/.bashrc
 ```
 
-Then restart your shell.
-
-Now, double-check that you have Python 3.9 or newer installed:
-
-```bash
-python3 --version
-```
-
-If your system Python version is not 3.9 or above, you must install [pyenv](https://github.com/pyenv/pyenv) following the instructions below.
-
-### Installing pyenv
-
-Install the required dependencies to build Python (instructions from [here](https://github.com/pyenv/pyenv/wiki#suggested-build-environment))
-
-```bash
-sudo apt update
-sudo apt install build-essential libssl-dev zlib1g-dev \
-libbz2-dev libreadline-dev libsqlite3-dev curl \
-libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
-```
-
-Install pyenv on your system (instructions from [here](https://github.com/pyenv/pyenv#automatic-installer), there are other alternative methods of installations avilable if you want)
-
-```bash
-curl https://pyenv.run | bash
-```
-
-Set up your bash shell environment for Pyenv (instructions from [here](https://github.com/pyenv/pyenv#set-up-your-shell-environment-for-pyenv))
-
-```bash
-echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bashrc
-echo 'command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc
-echo 'eval "$(pyenv init -)"' >> ~/.bashrc
-```
-
-Then restart your shell.
+A continuación, reinicie su shell.
 
 ## Configurar un usuario del sistema
 
@@ -145,14 +110,7 @@ cd /opt/pajbot
 sudo -H -u pajbot ./scripts/venvinstall.sh
 ```
 
-If you wanted to use your system version of Python, run the command like this instead:
-
-```bash
-cd /opt/pajbot
-sudo -H -u pajbot SKIP_PYENV=1 ./scripts/venvinstall.sh
-```
-
-If you wanted to use your system version of Python, run the command like this instead:
+Si desea utilizar la versión de Python de su sistema, ejecute el comando de la siguiente manera:
 
 ```bash
 cd /opt/pajbot
