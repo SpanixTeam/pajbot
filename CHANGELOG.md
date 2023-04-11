@@ -2,6 +2,14 @@
 
 ## Unversioned
 
+## v1.64
+
+Remember to bring your dependencies up to date with `./scripts/venvinstall.sh` when updating to this version!
+
+- Bugfix: Fix bad assert in global CD checker. (#2363)
+- Bugfix: Fix Type Emote not loading in the web UI properly. (#2365)
+- Minor: Add setting to control the delay of the rank refresh. (#2358)
+- Minor: Add setting to disable notifying the target of the Give Points command. (#2366)
 - Dev: Remove `ratelimiter` dependency, it was used to rate limit IRC connection creations which is not necessary any longer. (#2340)
 
 ## v1.63
