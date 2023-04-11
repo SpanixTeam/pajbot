@@ -135,6 +135,9 @@ def init(bp: Blueprint) -> None:
             if command.level > extra_args["user"].level:
                 return {"error": "Unauthorized"}, 403
 
+            if command.action_json is None:
+                return {"error": "Command must have an action"}, 500
+
             parsed_action = json.loads(command.action_json)
             if data.data_action_type:
                 parsed_action["type"] = data.data_action_type
@@ -145,11 +148,13 @@ def init(bp: Blueprint) -> None:
             aj = json.loads(command.action_json)
             old_message = ""
             new_message = ""
-            try:
-                old_message = command.action.response
+            if command.action is not None:
+                old_response = command.action.get_action_response()
+                if old_response is not None:
+                    old_message = old_response
+
+            if "message" in aj:
                 new_message = aj["message"]
-            except:
-                pass
 
             command.set(**payload)
             command.data.set(**payload)

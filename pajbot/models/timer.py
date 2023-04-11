@@ -1,30 +1,50 @@
+"""
+Timers should be creatable from web UI
+Timers should be editable from web UI
+Timers should be removable from web UI
+Timers should run after being created
+"""
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, TypedDict
+
 import json
 import logging
 
 from pajbot.managers.db import Base, DBManager
-from pajbot.models.action import ActionParser
+from pajbot.models.action import ActionParser, BaseAction
+from pajbot.models.user import User
 from pajbot.utils import find
 
-from sqlalchemy import BOOLEAN, INT, TEXT, Column
-from sqlalchemy.orm import reconstructor
+from sqlalchemy import Boolean, Integer, Text, event
+from sqlalchemy.orm import Mapped, QueryContext, mapped_column
+
+if TYPE_CHECKING:
+    from pajbot.bot import Bot
 
 log = logging.getLogger("pajbot")
+
+
+class TimerOptions(TypedDict):
+    name: str
+    interval_online: int
+    interval_offline: int
+    action: Dict[str, Any]
 
 
 class Timer(Base):
     __tablename__ = "timer"
 
-    id = Column(INT, primary_key=True)
-    name = Column(TEXT, nullable=False)
-    action_json = Column("action", TEXT, nullable=False)
-    interval_online = Column(INT, nullable=False)
-    interval_offline = Column(INT, nullable=False)
-    enabled = Column(BOOLEAN, nullable=False, default=True)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    name: Mapped[str]
+    action_json: Mapped[str] = mapped_column("action", Text)
+    interval_online: Mapped[int]
+    interval_offline: Mapped[int]
+    enabled: Mapped[bool] = mapped_column(Boolean, default=True)
 
-    def __init__(self, **options):
-        self.id = None
+    def __init__(self) -> None:
         self.name = "??"
-        self.action = None
+        self.action: Optional[BaseAction] = None
         self.action_json = "{}"
         self.interval_online = 5
         self.interval_offline = 30
@@ -32,9 +52,7 @@ class Timer(Base):
 
         self.refresh_tts()
 
-        self.set(**options)
-
-    def set(self, **options):
+    def set(self, options: TimerOptions) -> None:
         self.name = options.get("name", self.name)
         log.debug(options)
         if "action" in options:
@@ -43,32 +61,37 @@ class Timer(Base):
             self.action = ActionParser.parse(self.action_json)
         self.interval_online = options.get("interval_online", self.interval_online)
         self.interval_offline = options.get("interval_offline", self.interval_offline)
-        self.enabled = options.get("enabled", self.enabled)
 
-    @reconstructor
-    def init_on_load(self):
-        self.action = ActionParser.parse(self.action_json)
-
-        self.refresh_tts()
-
-    def refresh_tts(self):
+    def refresh_tts(self) -> None:
         self.time_to_send_online = self.interval_online
         self.time_to_send_offline = self.interval_offline
 
-    def refresh_action(self):
+    def refresh_action(self) -> None:
         self.action = ActionParser.parse(self.action_json)
 
-    def run(self, bot):
-        self.action.run(bot, source=None, message=None)
+    def run(self, bot: Bot) -> None:
+        if self.action is None:
+            log.warning(f"Timer action is None, invalid action. Timer ID: {self.id}")
+            return
+
+        dummy_user = User()
+        self.action.run(bot, dummy_user, "")
+
+
+@event.listens_for(Timer, "load")
+def on_timer_load(target: Timer, context: QueryContext) -> None:
+    log.info("REFRESHING TIMER SINCE IT UPDATED")
+    target.action = ActionParser.parse(target.action_json)
+    target.refresh_tts()
 
 
 class TimerManager:
-    def __init__(self, bot):
+    def __init__(self, bot: Bot) -> None:
         self.bot = bot
 
-        self.timers = []
-        self.online_timers = []
-        self.offline_timers = []
+        self.timers: List[Timer] = []
+        self.online_timers: List[Timer] = []
+        self.offline_timers: List[Timer] = []
 
         self.bot.execute_every(60, self.tick)
 
@@ -76,12 +99,12 @@ class TimerManager:
             self.bot.socket_manager.add_handler("timer.update", self.on_timer_update)
             self.bot.socket_manager.add_handler("timer.remove", self.on_timer_remove)
 
-    def on_timer_update(self, data):
+    def on_timer_update(self, data: Dict[str, Any]) -> None:
         try:
             timer_id = int(data["id"])
         except (KeyError, ValueError):
             log.warning("No timer ID found in on_timer_update")
-            return False
+            return
 
         updated_timer = find(lambda timer: timer.id == timer_id, self.timers)
         if updated_timer:
@@ -117,14 +140,12 @@ class TimerManager:
             if timer.enabled is False or timer.interval_offline <= 0:
                 self.offline_timers.remove(timer)
 
-        return True
-
-    def on_timer_remove(self, data):
+    def on_timer_remove(self, data: Dict[str, Any]) -> None:
         try:
             timer_id = int(data["id"])
         except (KeyError, ValueError):
             log.warning("No timer ID found in on_timer_update")
-            return False
+            return
 
         removed_timer = find(lambda timer: timer.id == timer_id, self.timers)
         if removed_timer:
@@ -135,12 +156,11 @@ class TimerManager:
             if removed_timer in self.offline_timers:
                 self.offline_timers.remove(removed_timer)
 
-        return True
-
-    def tick(self):
+    def tick(self) -> None:
         if self.bot.is_online:
-            for timer in self.online_timers:
-                timer.time_to_send_online -= 1
+            for active_timer in self.online_timers:
+                active_timer.time_to_send_online -= 1
+
             timer = find(lambda timer: timer.time_to_send_online <= 0, self.online_timers)
             if timer:
                 timer.run(self.bot)
@@ -148,8 +168,9 @@ class TimerManager:
                 self.online_timers.remove(timer)
                 self.online_timers.append(timer)
         else:
-            for timer in self.offline_timers:
-                timer.time_to_send_offline -= 1
+            for active_timer in self.offline_timers:
+                active_timer.time_to_send_offline -= 1
+
             timer = find(lambda timer: timer.time_to_send_offline <= 0, self.offline_timers)
             if timer:
                 timer.run(self.bot)
@@ -157,16 +178,16 @@ class TimerManager:
                 self.offline_timers.remove(timer)
                 self.offline_timers.append(timer)
 
-    def redistribute_timers(self):
+    def redistribute_timers(self) -> None:
         for x in range(0, len(self.offline_timers)):
             timer = self.offline_timers[x]
-            timer.time_to_send_offline = timer.interval_offline * ((x + 1) / len(self.offline_timers))
+            timer.time_to_send_offline = int(timer.interval_offline * ((x + 1) / len(self.offline_timers)))
 
         for x in range(0, len(self.online_timers)):
             timer = self.online_timers[x]
-            timer.time_to_send_online = timer.interval_online * ((x + 1) / len(self.online_timers))
+            timer.time_to_send_online = int(timer.interval_online * ((x + 1) / len(self.online_timers)))
 
-    def load(self):
+    def load(self) -> TimerManager:
         self.timers = []
         with DBManager.create_session_scope(expire_on_commit=False) as db_session:
             self.timers = (

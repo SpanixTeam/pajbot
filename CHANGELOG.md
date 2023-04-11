@@ -2,6 +2,21 @@
 
 ## Unversioned
 
+Remember to bring your dependencies up to date with `./scripts/venvinstall.sh` when updating to this version!  
+Note that with this version, `venvinstall.sh` will now try and use `pyenv` by default. We recommend you start using this tool, but if you wish to keep your previous setup (use the system python version), from now on, you will need to specify this by using `SKIP_PYENV=1 ./scripts/venvinstall.sh`.
+
+- Breaking: Changed the minimal supported Python version from 3.8 to 3.9. (#2397)
+- Bugfix: Migrated our use of the TMI Chatters API to the supported Helix Chatters API. (#2425)
+- Minor: Add native support for pyenv for managing Python versions (as noted above). (#2397, #2414)
+- Dev: Add typing to the timer model. (#2394)
+- Dev: Add typing to the roulette module. (#2393)
+- Dev: Add typing to the playsound module. (#2392)
+- Dev: Add mini typing to various models & modules. (#2395)
+- Dev: Add typing to the duel model. (#2391)
+- Dev: Add typing to the deck manager & model. (#2390)
+- Dev: Add typing & refactor stream manager & model. (#2389)
+- Dev: Upgrade to SQLAlchemy 2.x. (#2378)
+
 ## v1.64
 
 Remember to bring your dependencies up to date with `./scripts/venvinstall.sh` when updating to this version!

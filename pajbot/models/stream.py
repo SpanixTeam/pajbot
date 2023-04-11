@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union
 
+import datetime
 import logging
 
 from pajbot import utils
@@ -13,8 +14,8 @@ from pajbot.managers.handler import HandlerManager
 from pajbot.managers.redis import RedisManager
 from pajbot.models.user import UserChannelInformation, UserStream
 
-from sqlalchemy import BOOLEAN, INT, TEXT, Column, ForeignKey
-from sqlalchemy.orm import relationship
+from sqlalchemy import ForeignKey, Integer
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy_utc import UtcDateTime
 
 if TYPE_CHECKING:
@@ -26,16 +27,15 @@ log = logging.getLogger("pajbot")
 class StreamChunk(Base):
     __tablename__ = "stream_chunk"
 
-    id = Column(INT, primary_key=True)
-    stream_id = Column(INT, ForeignKey("stream.id", ondelete="CASCADE"), nullable=False)
-    broadcast_id = Column(TEXT, nullable=False)
-    video_url = Column(TEXT, nullable=True)
-    video_preview_image_url = Column(TEXT, nullable=True)
-    chunk_start = Column(UtcDateTime(), nullable=False)
-    chunk_end = Column(UtcDateTime(), nullable=True)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    stream_id: Mapped[int] = mapped_column(Integer, ForeignKey("stream.id", ondelete="CASCADE"))
+    broadcast_id: Mapped[str]
+    video_url: Mapped[Optional[str]]
+    video_preview_image_url: Mapped[Optional[str]]
+    chunk_start: Mapped[datetime.datetime] = mapped_column(UtcDateTime())
+    chunk_end: Mapped[Optional[datetime.datetime]] = mapped_column(UtcDateTime())
 
-    def __init__(self, stream, broadcast_id, created_at, **options):
-        self.id = None
+    def __init__(self, stream: Stream, broadcast_id: str, created_at: str) -> None:
         self.stream_id = stream.id
         self.broadcast_id = broadcast_id
         self.video_url = None
@@ -49,11 +49,11 @@ class StreamChunk(Base):
 class Stream(Base):
     __tablename__ = "stream"
 
-    id = Column(INT, primary_key=True)
-    title = Column(TEXT, nullable=False)
-    stream_start = Column(UtcDateTime(), nullable=False)
-    stream_end = Column(UtcDateTime(), nullable=True)
-    ended = Column(BOOLEAN, nullable=False, default=False)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    title: Mapped[str]
+    stream_start: Mapped[datetime.datetime] = mapped_column(UtcDateTime())
+    stream_end: Mapped[Optional[datetime.datetime]] = mapped_column(UtcDateTime())
+    ended: Mapped[bool]
 
     stream_chunks = relationship(
         StreamChunk, uselist=True, backref="stream", cascade="save-update, merge, expunge", lazy="joined"
@@ -66,13 +66,16 @@ class Stream(Base):
         self.ended = False
 
     @property
-    def uptime(self):
+    def uptime(self) -> datetime.timedelta:
         """
         Returns a TimeDelta for how long the stream was online, or is online.
         """
 
-        if self.ended is False:
-            return utils.now() - self.stream_start
+        if self.ended is False or self.stream_end is None:
+            now = utils.now()
+            start = self.stream_start
+            diff: datetime.timedelta = now - start
+            return diff
 
         return self.stream_end - self.stream_start
 
@@ -166,18 +169,18 @@ class StreamManager:
             db_session.expunge_all()
 
     @property
-    def online(self):
+    def online(self) -> bool:
         return self.current_stream is not None
 
     @property
-    def offline(self):
+    def offline(self) -> bool:
         return self.current_stream is None
 
     @staticmethod
-    def commit():
+    def commit() -> None:
         log.info("commiting something?")
 
-    def create_stream_chunk(self, status: UserStream):
+    def create_stream_chunk(self, status: UserStream) -> None:
         if self.current_stream is None:
             log.warn("create_stream_chunk called with current_stream being None")
             return
@@ -211,24 +214,27 @@ class StreamManager:
         with DBManager.create_session_scope(expire_on_commit=False) as db_session:
             stream_chunk = db_session.query(StreamChunk).filter_by(broadcast_id=status.id).one_or_none()
             new_stream = False
+            stream: Stream
             if stream_chunk is not None:
                 stream = stream_chunk.stream
             else:
                 log.info("checking if there is an active stream already")
-                stream = db_session.query(Stream).filter_by(ended=False).order_by(Stream.stream_start.desc()).first()
-                new_stream = stream is None
+                stream2 = db_session.query(Stream).filter_by(ended=False).order_by(Stream.stream_start.desc()).first()
+                new_stream = stream2 is None
 
-                if new_stream:
+                if stream2 is None:
                     log.info("No active stream, create new!")
-                    stream = Stream(status.started_at, title=status.title)
-                    db_session.add(stream)
+                    stream2 = Stream(status.started_at, title=status.title)
+                    db_session.add(stream2)
                     db_session.commit()
                     log.info("Successfully added stream!")
-                stream_chunk = StreamChunk(stream, status.id, status.started_at)
+                stream_chunk = StreamChunk(stream2, status.id, status.started_at)
                 db_session.add(stream_chunk)
                 db_session.commit()
-                stream.stream_chunks.append(stream_chunk)
+                stream2.stream_chunks.append(stream_chunk)
                 log.info("Created stream chunk")
+
+                stream = stream2
 
             self.current_stream = stream
             self.current_stream_chunk = stream_chunk
@@ -344,7 +350,7 @@ class StreamManager:
     def refresh_video_url_stage1(self) -> None:
         self.fetch_video_url_stage1()
 
-    def refresh_video_url_stage2(self, data) -> None:
+    def refresh_video_url_stage2(self, data: List[TwitchVideo]) -> None:
         if self.online is False:
             return
 

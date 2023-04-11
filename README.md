@@ -7,7 +7,7 @@ Nota: pajbot está en **modo de mantenimiento**.
 Esto significa que nos centramos en mantener el proyecto vivo no permitiendo grandes revisiones de ningún sistema de pajbot ni de ninguna característica importante.
 Arreglar errores, actualizar dependencias y asegurar que el código que interactúa con APIs externas siga funcionando será nuestro principal objetivo.
 Las peticiones de características no serán aceptadas a menos que alguien esté dispuesto a poseer la característica, e incluso entonces algunas características que cambian demasiado la arquitectura no serán permitidas.
-La versión mínima de Python actualmente soportada es **3.8**.
+La versión mínima de Python actualmente soportada es **3.9**.
 
 ## Instalación rápida
 
