@@ -301,7 +301,7 @@ class User(Base):
             # How many chances the user has before receiving a full timeout.
             total_chances = warning_module.settings["total_chances"]
 
-            warning_keys = self.get_warning_keys(total_chances, warning_module.settings["redis_prefix"])
+            warning_keys = self.get_warning_keys(total_chances, "")
             warnings = self.get_warnings(redis, warning_keys)
 
             chances_used = self.get_chances_used(warnings)
