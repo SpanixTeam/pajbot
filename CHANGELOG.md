@@ -2,11 +2,39 @@
 
 ## Unversioned
 
+Remember to bring your dependencies up to date with `./scripts/venvinstall.sh` when updating to this version!
+
+- Dev: Add typing to the Sub Alert module. (#2512)
+- Dev: Add typing to the Raid Alert module. (#2513)
+- Dev: Add typing to the remaining chat alert modules. (#2514)
+
+## v1.67
+
+Remember to bring your dependencies up to date with `./scripts/venvinstall.sh` when updating to this version!
+
+- Minor: Add minimum duel amount setting to the duel module. (#2508)
+- Bugfix: Fix playsounds tab in the top navigation bar not being visible on the admin page when the module was disabled. (#2469)
+- Bugfix: Multi-Raffle no longer raises an exception without picking any winners when the raffle ends. (#2492)
+- Dev: Fix deprecated use of `redis.hmset`. (#2501)
+- Dev: Fix deprecated use of `load_module` slated for removal in Python 3.12. (#2499)
+- Dev: Add typing to the raffle module. (#2500)
+
+## v1.66
+
+Remember to bring your dependencies up to date with `./scripts/venvinstall.sh` when updating to this version!
+
+Make sure to update your dependencies with this release.
+
+- Bugfix: Fix an issue where the 7TV channel emote fetching would fail if the user didn't have an emote set created, or no emotes in their current emote set. (#2448)
+
+## v1.65
+
 Remember to bring your dependencies up to date with `./scripts/venvinstall.sh` when updating to this version!  
 Note that with this version, `venvinstall.sh` will now try and use `pyenv` by default. We recommend you start using this tool, but if you wish to keep your previous setup (use the system python version), from now on, you will need to specify this by using `SKIP_PYENV=1 ./scripts/venvinstall.sh`.
 
 - Breaking: Changed the minimal supported Python version from 3.8 to 3.9. (#2397)
 - Bugfix: Migrated our use of the TMI Chatters API to the supported Helix Chatters API. (#2425)
+- Bugfix: Fix issue with the user rank refresh when using default settings. (#2435)
 - Minor: Add native support for pyenv for managing Python versions (as noted above). (#2397, #2414)
 - Dev: Add typing to the timer model. (#2394)
 - Dev: Add typing to the roulette module. (#2393)
@@ -16,6 +44,8 @@ Note that with this version, `venvinstall.sh` will now try and use `pyenv` by de
 - Dev: Add typing to the deck manager & model. (#2390)
 - Dev: Add typing & refactor stream manager & model. (#2389)
 - Dev: Upgrade to SQLAlchemy 2.x. (#2378)
+- Dev: Migrate to Helix's Badge API. (#2428)
+- Dev: Only cache virtual environments for **exact** Python versions. (#2436)
 
 ## v1.64
 
