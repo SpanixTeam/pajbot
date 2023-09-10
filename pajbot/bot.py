@@ -1252,9 +1252,9 @@ def _filter_time_since_dt(var: Any, args: List[str]) -> Any:
         if ts:
             return ts
 
-        return "0 seconds"
+        return "0 segundos"
     except:
-        return "never FeelsBadMan ?"
+        return "¿nunca? FeelsBadMan ..."
 
 
 def _filter_time_until_dt(var: Any, args: List[str]) -> Any:
@@ -1263,9 +1263,9 @@ def _filter_time_until_dt(var: Any, args: List[str]) -> Any:
         if ts:
             return ts
 
-        return "0 seconds"
+        return "0 segundos"
     except:
-        return "never FeelsBadMan ?"
+        return "¿nunca? FeelsBadMan ..."
 
 
 def _filter_timedelta_days(var: Any, args: List[str]) -> Any:
